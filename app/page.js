@@ -1,5 +1,7 @@
 import React from "react";
 import dynamic from 'next/dynamic';
+// src/index.js or src/index.tsx
+import 'font-awesome/css/font-awesome.min.css';
 
 const Navbar = dynamic(()=>import('./Components/Navbar/Navbar'))
 const Hero = dynamic(()=>import('./Components/Hero/Hero'))

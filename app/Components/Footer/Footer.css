@@ -45,7 +45,7 @@ footer {
   }
   
   .footer-content__1 li a:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .footer-content__1 li:nth-child(1) {
@@ -89,7 +89,7 @@ footer {
   }
   
   .footer-content__2 a:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .footer-content__2 li {
@@ -128,12 +128,12 @@ footer {
     text-decoration: none;
     color: white;
     font-weight: 700;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     padding: 1.5rem 2.5rem;
     border-radius: 0.3rem;
     box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.25);
     transition: all 0.3s;
-    border: 2px solid #ff4d30;
+    border: 2px solid #1572D3;
     font-size: 1.6rem;
     width: -moz-fit-content;
     width: fit-content;

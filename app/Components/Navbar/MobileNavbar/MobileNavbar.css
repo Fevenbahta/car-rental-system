@@ -9,11 +9,11 @@
   
   .mobile-navbar__links li a {
     text-decoration: none;
-    color: #010103;
+    color: #f8f8fa;
     font-weight: 500;
     transition: all 0.3s;
   }
   
   .mobile-navbar__links li a:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }

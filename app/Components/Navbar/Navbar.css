@@ -7,7 +7,7 @@
   }
   
   html {
-    font-size: 10px;
+    font-size: 12px;
     scroll-behavior: smooth;
   }
   
@@ -20,7 +20,7 @@
   /* Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #ff4d30 #ffffff;
+    scrollbar-color: #1572D3 #ffffff;
     font-family: 'Poppins', sans-serif;
   }
   
@@ -45,17 +45,23 @@
   
   *::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background-color: #ff4d30;
+    background-color: #1572D3;
   }
   
   *::-webkit-scrollbar-thumb:hover {
-    background-color: #ff4d30;
+    background-color: #1572D3;
   }
   
   *::-webkit-scrollbar-thumb:active {
     background-color: #ff2525;
   }
-
+  .navbar-divider {
+    width: 1300%; /* Full width of the container */
+    height: 1px; /* Thickness of the line */
+    background-color: #ccc; /* Line color */
+    margin: 10px 0; /* Space above and below the line */
+  }
+  
   .navbar {
     max-width: 133rem;
     width: 100%;
@@ -71,8 +77,17 @@
     background-color: transparent;
     z-index: 99999;
     margin: 0 auto;
+    flex-direction: column;
   }
-  
+  .navbar__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 1px 1px 1px;
+    width: 120%;
+    transition: transform 0.3s ease-out; /* smooth transition for main content */
+
+  }
   .navbar__img {
     width: 14.5rem;
   }
@@ -83,28 +98,61 @@
   }
   
   .navbar__links {
+    margin-top: 10px;
+    margin-left: 500px;
     display: flex;
     list-style: none;
     gap: 2.1rem;
     font-family: 'Poppins', sans-serif;
+    transition: transform 0.3s ease-out; /* smooth transition for main content */
+
   }
   
   .navbar__links a {
     font-size: 1.6rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
-    color: #010103;
+    color: white;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s;
   }
   
   .navbar__links a:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
+
+
+  .navbar__linkstop {
+    display: flex;
+    list-style: none;
+    gap: 45.1rem;
+    font-family: 'Poppins', sans-serif;
+    width: 125%;
+    transition: transform 0.2s ease-out; /* smooth transition for text movement */
+
+  }
+  
+  .navbar__linkstop a {
+    font-size: 1.6rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .navbar__linkstop a:hover {
+    color: #1572D3;
+  }
+  
   
   @media (max-width: 1000px) {
     .navbar__links {
+      display: none;
+    }
+    .navbar__linkstop {
       display: none;
     }
   }
@@ -117,6 +165,7 @@
     font-weight: 500;
     align-items: center;
     cursor: pointer;
+    border-radius:25%;
   }
   
   @media (max-width: 1000px) {
@@ -126,27 +175,28 @@
   }
   
   .navbar__buttons__sign-in {
-    color: #010103;
+    color: white;
     cursor: pointer;
     transition: all 0.3s;
   }
   
   .navbar__buttons__sign-in:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .navbar__buttons__register {
-    background-color: #ff4d30;
+    background-color: #1572D3;
     color: white;
-    padding: 1.5rem 3rem;
+    padding: 1rem 2rem;
     border-radius: 3px;
-    box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.35);
+    box-shadow: 0 10px 15px 0 rgba(48, 162, 255, 0.35);
     transition: all 0.3s;
+    border-radius:10%;
   }
   
   .navbar__buttons__register:hover {
-    box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.5);
-    background-color: #fa4226;
+    box-shadow: 0 10px 15px 0 rgba(48, 162, 255, 0.35);
+    background-color: #3698d1;
   }
   
   .navbar__buttons a {
@@ -164,7 +214,7 @@
   }
   
   .mobile-hamb:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   @media (max-width: 1000px) {
@@ -198,7 +248,7 @@
   }
   
   .mobile-navbar__close:hover {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   
@@ -211,3 +261,64 @@
       display: none;
     }
   }
+
+
+  /* Mobile Navbar Styles */
+.mobile-navbar__top {
+    background-color: #f8f8f8;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: 'Times New Roman', Times, serif;
+    border-bottom: 1px solid #ddd; /* Optional, gives a separation line */
+    margin-bottom: 20px; /* Ensures space between the top section and navbar */
+}
+
+/* Contact, special collection, and language/currency sections */
+.mobile-navbar__contact,
+.mobile-navbar__special,
+.mobile-navbar__lang-currency {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #eee8e8;
+}
+
+.mobile-navbar__contact i,
+.mobile-navbar__lang-currency i {
+    margin-right: 8px;
+}
+
+/* Special message styling */
+.mobile-navbar__special {
+    font-style: italic;
+    color: #eee8e8;
+}
+
+/* Navbar links */
+.mobile-navbar__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.mobile-navbar__links li {
+    margin: 10px 0;
+}
+
+.mobile-navbar__links a {
+    text-decoration: none;
+    color: #f5f2f2;
+    font-size: 16px;
+}
+
+/* Optional: Make the nav links more visible on mobile */
+@media (max-width: 768px) {
+    .mobile-navbar__links {
+        display: flex;
+        flex-direction: column;
+    }
+}

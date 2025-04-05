@@ -70,7 +70,7 @@
   }
   
   .pick-box button:hover {
-    background-color: #ff4d30;
+    background-color: #1572D3;
     color: white;
   }
   
@@ -96,7 +96,7 @@
   
   .pick-description__price {
     width: 100%;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     font-size: 1.8rem;
     display: flex;
     align-items: center;
@@ -139,7 +139,7 @@
     font-weight: 600;
     color: white;
     font-family: "Poppins", sans-serif;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     padding: 1rem 1rem;
     display: flex;
     width: 100%;
@@ -175,7 +175,7 @@
   }
   
   .colored-button {
-    background-color: #ff4d30 !important;
+    background-color: #1572D3 !important;
     color: white;
   }
   

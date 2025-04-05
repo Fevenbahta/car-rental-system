@@ -55,7 +55,7 @@
   }
   
   .book-content__box .box-form b {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   @media (max-width: 1000px) {
@@ -84,7 +84,7 @@
   }
   
   .book-content__box .box-form__car-type label i {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .book-content__box .box-form__car-type select {
@@ -118,7 +118,7 @@
   }
   
   .book-content__box .box-form__car-time label i {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .book-content__box .box-form__car-time ::-webkit-datetime-edit {
@@ -140,7 +140,7 @@
     font-size: 1.8rem;
     font-weight: 500;
     color: white;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     box-shadow: 0 10px 15px rgba(255, 83, 48, 0.35);
     cursor: pointer;
     transition: all 0.3s;
@@ -242,7 +242,7 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem 1.5rem;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     color: white;
     align-items: center;
   }
@@ -274,7 +274,7 @@
   .booking-modal__message h4 {
     font-size: 1.9rem;
     font-weight: 700;
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .booking-modal__message h4 i {
@@ -311,7 +311,7 @@
   
   .booking-modal__car-info__dates h5 {
     font-size: 1.8rem;
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .booking-modal__car-info__dates span {
@@ -363,7 +363,7 @@
 
   .booking-modal__car-info__model h5 {
     font-size: 1.8rem;
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .booking-modal__car-info__model h5 span {
@@ -386,7 +386,7 @@
   .booking-modal__person-info h4 {
     font-size: 1.8rem;
     text-transform: uppercase;
-    color: #ff4d30;
+    color: #1572D3;
     margin-bottom: 2rem;
   }
 
@@ -454,7 +454,7 @@
   
   .info-form__2col span label b,
   .info-form__1col span label b {
-    color: #ff4d30;
+    color: #1572D3;
   }
   
   .info-form__2col span input,
@@ -485,7 +485,7 @@
     font-size: 2.4rem;
     color: white;
     font-weight: 700;
-    background-color: #ff4d30;
+    background-color: #1572D3;
     border: 1px solid yellow;
     padding: 1.2rem 2rem;
     cursor: pointer;
