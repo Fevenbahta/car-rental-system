@@ -57,14 +57,15 @@ function Navbar() {
           <hr />
           <hr className="navbar-divider" />
           <div className="navbar__img">
+            {/* Uncomment if logo is needed */}
             {/* <a href="/" onClick={() => window.scrollTo(0, 0)}>
-                <Image 
-                  src={logo}
-                  alt='logo-img'
-                  loading='lazy'
-                  className='logo-navbar'
-                />
-              </a> */}
+              <Image 
+                src={logo}
+                alt='logo-img'
+                loading='lazy'
+                className='logo-navbar'
+              />
+            </a> */}
           </div>
 
           <div className="navbar__main">
@@ -101,10 +102,11 @@ function Navbar() {
               </li>
             </ul>
             <div className="navbar__buttons">
-              <a className="navbar__buttons__sign-in" href="/">
-                Sign In
-              </a>
-              <a className="navbar__buttons__register" href="/">
+            <a className="navbar__buttons__sign-in" href="/login">
+  Sign In
+</a>
+
+              <a className="navbar__buttons__register" href="/register">
                 Register
               </a>
             </div>

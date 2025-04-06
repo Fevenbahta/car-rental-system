@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff; /* White background */
+}
+
+.container {
+    max-width: 600px;
+    margin: 100px auto; /* Centered with more space on top */
+    padding: 30px;
+    background: white;
+    border-radius: 17px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+    text-align: center; /* Center text */
+    position: relative; /* Allow positioning of the "Forgot Password?" link */
+    width: 1000px;
+}
+
+.forgot-password {
+    text-align: right;
+    font-size: 19px;
+    color: rgb(17, 17, 17);
+    cursor: pointer;
+    margin: 15px 0; /* Added margin for spacing */
+  }
+  
+
+h1 {
+    margin-top: 10px;
+ 
+    margin-bottom: 60px;
+    font-size: 32px; /* Larger font size */
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #212122; /* Light gray border */
+    border-radius: 17px; /* Rounded corners */
+    box-sizing: border-box;
+    font-size: 20px; /* Larger font size */
+    
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 20px; /* Larger font size */
+    margin: 10px 0; /* Margin between buttons */
+}
+
+button.primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
+
+button.primary:hover {
+    background-color: #007bff; /* Darker blue on hover */
+}
+
+button.secondary {
+    background-color: white; /* White background */
+    color: #333; /* Dark text */
+}
+
+button.secondary:hover {
+    background-color: #f8f9fa; /* Light gray on hover */
+}
+
+.separator {
+    margin: 20px 0; /* Space above and below */
+    font-size: 20px;
+    color: #999; /* Light gray for the separator */
+}
+
+.social-button {
+    background-color: white; /* White background */
+    color: #333; /* Dark text */
+    border: 1px solid #ced4da; /* Light gray border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-button:hover {
+    background-color: #f8f9fa; /* Light gray on hover */
+}
+
+.social-button img {
+    width: 40px; /* Adjust logo size */
+    margin-right: 8px; /* Space between logo and text */
+}
+
+.signup {
+    font-weight: bold; /* Bold text for Sign Up */
+    color: black; /* Black color */
+    font-size: 20px;
+}
+p{
+    font-size: 20px;
+
+}
+.guest {
+    font-size: 19px; /* Smaller font size */
+    color: #777; /* Gray color */
+}
+
+label {
+    display: block; /* Block display for labels */
+    margin: 10px 0 5px; /* Space above and below labels */
+    font-size: 19px; /* Font size for labels */
+    color: #333; /* Dark text color */
+    text-align: left; /* Left align the text */
+    font-weight: bold;
+}
+
+/* Additional styling for the country code placeholder */
+input[type="tel"] {
+    padding-left: 40px; /* Space for the country code */
+}
