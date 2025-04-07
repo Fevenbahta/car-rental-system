@@ -1,0 +1,182 @@
+.most-searched-container {
+    text-align: center;
+    padding: 40px 50px;
+  }
+  
+  h2 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .vehicles-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .vehicle-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    overflow: hidden;
+    margin: 10px;
+  }
+  
+  .image-container {
+    width: 100%;
+    height: 220px;
+  }
+  
+  .vehicle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .description-container {
+    padding: 10px 16px; /* Reduced padding */
+  }
+  
+  .description-container h3 {
+    font-size: 22px;
+    margin: 6px 0 2px;
+  }
+  
+  .vehicle-location {
+    font-size: 14px;
+    margin: 2px 0 8px;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .vehicle-rating {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  
+  .vehicle-rating .fa-star {
+    color: #FFD700;
+    margin-right: 4px;
+  }
+  
+  .description-container h4 {
+    font-size: 18px;
+    margin: 6px 0 12px;
+  }
+  
+  .description-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .description-column {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .description-column p {
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+  }
+  
+  .icon {
+    color: #222;
+    margin-right: 8px;
+  }
+  
+  .price-separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0 8px;
+    width: 100%;
+  }
+  
+  .price-info {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .price-info .icon {
+    margin-right: 6px;
+    color: #333;
+  }
+  
+  .rent-now-btn {
+    background-color: #007BFF;
+    color: white;
+    font-size: 15px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 6px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .rent-now-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 768px) {
+    .vehicles-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .vehicle-card {
+      width: 80%;
+    }
+  
+    .description-row {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .description-column {
+      width: 100%;
+      text-align: center;
+    }
+    .popular {
+       
+        display: inline-block;   
+        background-color: #e0f0ff; /* light blue background */
+        color: #1572D3;            /* blue text color */
+        padding: 10px;             /* optional: adds spacing inside the element */
+        border-radius: 5px;        /* optional: rounded corners */
+      /* optional: bold text */
+      }
+      
+  }
+  

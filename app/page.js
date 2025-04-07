@@ -11,6 +11,8 @@ import 'font-awesome/css/font-awesome.min.css';
 const Navbar = dynamic(()=>import('./Components/Navbar/Navbar'))
 const Hero = dynamic(()=>import('./Components/Hero/Hero'))
 const BookCar = dynamic(()=>import('./Components/BookCar/BookCar'))
+const HowItWorks = dynamic(()=>import('./Components/HowItWorks/HowItWorks'))
+const MostSearched = dynamic(()=>import('./Components/MostSearched/MostSearched'))
 const PlanTrip = dynamic(()=>import('./Components/PlanTrip/PlanTrip'))
 const PickCar = dynamic(()=>import('./Components/PickCar/PickCar'))
 const ChooseUs = dynamic(()=>import('./Components/ChooseUs/ChooseUs'))
@@ -24,8 +26,11 @@ export default function Home() {
     <div>
       <Navbar />
       <Hero />
-      <BookCar />
-      <PlanTrip />
+   
+      <BookCar /> <HowItWorks />
+      <MostSearched />
+      <PlanTrip /> 
+       
       <PickCar />
       <ChooseUs />
       <Testimonials />

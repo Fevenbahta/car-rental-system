@@ -26,8 +26,12 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/pages/login/login.js", "app/forgotpassword/forgotpassword.js", "app/Componeapp/otpverification/otpverification.jsponeapp/register/register.js
+    "**/*.tsx",
+    "app/pages/login/login.js",
+    "app/forgotpassword/forgotpassword.js",
+    "app/Componeapp/otpverification/otpverification.js",
+    "app/Componeapp/register/register.js"
+  ],
   "exclude": [
     "node_modules"
   ]
