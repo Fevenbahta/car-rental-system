@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -26,9 +22,11 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/pages/login/login.js", "app/forgotpassword/forgotpassword.js", "app/Componeapp/otpverification/otpverification.jsponeapp/register/register.js
-  "exclude": [
-    "node_modules"
-  ]
+    "**/*.tsx",
+    "app/pages/login/login.js",
+    "app/forgotpassword/forgotpassword.js",
+    "app/otpverification/otpverification.js",
+    "app/register/register.js"
+  ],
+  "exclude": ["node_modules"]
 }
