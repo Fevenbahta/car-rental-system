@@ -98,8 +98,8 @@
   }
   
   .text-container__left a:hover {
-    box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.6);
-    background-color: #fa4226;
+    box-shadow: 0 10px 15px 0 rgba(48, 117, 255, 0.6);
+    background-color: #1572D3;
   }
   
   .text-container__right {

@@ -1,7 +1,7 @@
 /* styles/register.css */
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 100px auto;
     padding: 30px;
     background: white;
@@ -24,7 +24,7 @@ input {
     border: 1px solid #ced4da;
     border-radius: 12px;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 16;
 }
 
 button {
@@ -66,10 +66,10 @@ button.primary:hover {
 label {
     display: block; /* Block display for labels */
     margin: 10px 0 5px; /* Space above and below labels */
-    font-size: 20px; /* Font size for labels */
+    font-size: 20; /* Font size for labels */
     color: #333; /* Dark text color */
     text-align: left; /* Left align the text */
-    font-weight: bold;
+    font-weight:600;
 }
 
 /* Additional styling for the country code placeholder */

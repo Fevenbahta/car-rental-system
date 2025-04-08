@@ -227,14 +227,14 @@ function BookCar() {
                   </select>
                 </div>
 
-                <div className="box-form__car-type">
+                {/* <div className="box-form__car-type">
                   <label>
                     <IconMapPinFilled className="input-icon" /> &nbsp; Pick-up{" "}
                     <b>*</b>
                   </label>
                   <select value={pickUp} onChange={handlePick}>
                     <option>Select pick up location</option>
-                    <option>New York</option>
+                    <option>Addis Ababa</option>
                     <option>Rome</option>
                     <option>Los Angeles</option>
                     <option>Las Vegas</option>
@@ -255,7 +255,7 @@ function BookCar() {
                     <option>Las Vegas</option>
                     <option>Barcellona</option>
                   </select>
-                </div>
+                </div> */}
                 <div className="box-form__car-time">
                   <label htmlFor="picktime">
                     <IconCalendarEvent className="input-icon" /> &nbsp; Pick-up{" "}
@@ -281,10 +281,11 @@ function BookCar() {
                     type="date"
                   ></input>
                 </div>
-
-                <button onClick={openModal} type="submit">
+<div>     <button onClick={openModal} type="submit">
                   Search
-                </button>
+                </button>  </div>
+
+         
               </form>
             </div>
           </div>

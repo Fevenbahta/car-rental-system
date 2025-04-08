@@ -27,11 +27,12 @@ export default function Home() {
       <Navbar />
       <Hero />
    
-      <BookCar /> <HowItWorks />
+      <BookCar /> 
+      <PlanTrip />  {/* <HowItWorks /> */}
       <MostSearched />
-      <PlanTrip /> 
+     
        
-      <PickCar />
+      {/* <PickCar /> */}
       <ChooseUs />
       <Testimonials />
       <Faq />

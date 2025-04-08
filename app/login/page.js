@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import GoogleLogo from './google-logo.png';
+import Logo from './logo1.png'; // Replace with your actual logo path
 
 const LoginPage = () => {
   const router = useRouter();
@@ -14,6 +15,8 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [phoneError, setPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
@@ -34,38 +37,79 @@ const LoginPage = () => {
     const value = e.target.value;
     setPassword(value);
 
-    const isValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(value);
-    if (value.length > 0 && !isValid) {
-      setPasswordError('Password must be at least 6 characters and include letters and numbers');
+    if (value.length < 6) {
+      setPasswordError('Password must be more than 6 characters');
     } else {
       setPasswordError('');
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!phone || phoneError || passwordError) return;
 
-    const fullPhone = `${countryCode}${phone}`;
-    console.log({ phone: fullPhone, password });
+    const fullPhone = `0${phone}`;
 
-    // Add login logic here
+    const loginPayload = {
+      phone: fullPhone,
+      password: password,
+    };
+
+    setIsLoading(true);
+    setLoginError('');
+    console.log(loginPayload);
+
+    try {
+      const response = await fetch('https://www.carrental.emareicthub.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginPayload),
+      });
+
+      console.log('🔹 Response Status:', response.status);
+
+      const textResponse = await response.text();
+      console.log('🔹 Raw Response Body (as text):', textResponse);
+
+      if (!response.ok) {
+        throw new Error('Login failed, please check your credentials');
+      }
+
+      const data = JSON.parse(textResponse); // Parse manually from text
+      console.log('✅ Parsed JSON Data:', data);
+
+      // Store user info
+      localStorage.setItem('userPhone', fullPhone);
+      router.push('/#hero'); // Go to the hero section
+    } catch (error) {
+      setLoginError(error.message);
+      console.error('❌ Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-center">Login</h1>
+<div className="min-h-screen flex items-center justify-center bg-gray-1000 p-6">
+  <div className="bg-white shadow-xl rounded-2xl w-full max-w-2xl p-12 space-y-8"> {/* Much wider form */}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="text-center mb-6">
+          <img src={Logo.src} alt="Logo" className="w-32 mx-auto" /> {/* Logo at the top */}
+        </div>
+        <h1 className="text-4xl font-bold text-center text-gray-800">Login</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Phone number */}
           <div>
-            <label className="block mb-1 font-medium">Phone Number</label>
-            <div className="flex items-center gap-2">
+            <label className="block mb-2 text-xl font-semibold">Phone Number</label>
+            <div className="flex items-center gap-3">
               <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="border rounded-md px-2 py-2 text-sm"
+                className="border rounded-md px-4 py-3 text-lg"
               >
                 <option value="+251">🇪🇹 +251</option>
                 <option value="+1">🇺🇸 +1</option>
@@ -79,77 +123,77 @@ const LoginPage = () => {
                 value={phone}
                 onChange={handlePhoneChange}
                 placeholder="912345678"
-                className={`w-full border px-4 py-2 rounded-md outline-none focus:ring-2 ${
+                className={`w-full border px-6 py-3 rounded-md outline-none focus:ring-2 ${
                   phoneError ? 'border-red-500 ring-red-200' : 'focus:ring-blue-200'
                 }`}
                 required
               />
             </div>
-            {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+            {phoneError && <p className="text-red-600 text-lg mt-2">{phoneError}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block mb-1 font-medium">Password</label>
+            <label className="block mb-2 text-xl font-semibold">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handlePasswordChange}
                 placeholder="Enter your password"
-                className={`w-full border px-4 py-2 rounded-md outline-none focus:ring-2 ${
+                className={`w-full border px-6 py-3 rounded-md outline-none focus:ring-2 ${
                   passwordError ? 'border-red-500 ring-red-200' : 'focus:ring-blue-200'
                 }`}
                 required
               />
               <span
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer"
                 onClick={togglePasswordVisibility}
               >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                {showPassword ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
               </span>
             </div>
-            {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
+            {passwordError && <p className="text-red-600 text-lg mt-2">{passwordError}</p>}
           </div>
 
           <div
-            className="text-right text-sm text-blue-600 cursor-pointer"
+            className="text-right text-lg text-blue-600 cursor-pointer"
             onClick={() => router.push('/forgotpassword')}
           >
             Forgot Password?
           </div>
 
+          {loginError && <p className="text-red-600 text-lg text-center">{loginError}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-            disabled={!!phoneError || !!passwordError}
+            className="w-full bg-blue-600 text-white py-5 rounded-full hover:bg-blue-700 transition disabled:opacity-50 text-xl font-semibold"
+            disabled={isLoading || !!phoneError || !!passwordError}
           >
-            Login
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        <p className="text-center text-sm">
+        <p className="text-center text-lg">
           Don’t have an account?{' '}
           <span
-            className="text-blue-600 font-medium cursor-pointer"
+            className="text-blue-600 font-semibold cursor-pointer"
             onClick={() => router.push('/register')}
           >
             Sign Up
           </span>
         </p>
 
-        <div className="flex items-center justify-between my-4">
+        <div className="flex items-center justify-between my-6">
           <hr className="border-gray-300 w-1/3" />
-          <span className="text-gray-400 text-sm">or</span>
+          <span className="text-gray-400 text-lg">or</span>
           <hr className="border-gray-300 w-1/3" />
         </div>
-
-        <button className="w-full border border-gray-300 flex items-center justify-center gap-2 py-2 rounded-md hover:bg-gray-50 transition">
-          <img src={GoogleLogo.src} alt="Google Logo" className="w-4 h-4" />
-          <span className="text-sm">Continue with Google</span>
+        <button className="w-full border border-gray-300 flex items-center justify-center gap-6 py-4 rounded-md hover:bg-gray-50 transition">
+          <img src={GoogleLogo.src} alt="Google Logo" className="w-8 h-8" />
+          <span className="text-xl font-semibold">Continue with Google</span>
         </button>
 
-        <button className="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition text-sm">
+        <button className="w-full border border-gray-300 py-4 rounded-md hover:bg-gray-50 transition text-xl font-semibold">
           Continue as Guest
         </button>
       </div>

@@ -3,7 +3,7 @@
 import React from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import './ChooseUs.css'
-import MainImg from "./main.png";
+import MainImg from "./car26.jpg";
 import Box1 from "./icon1-1.svg";
 import Box2 from "./icon2-1.svg";
 import Box3 from "./icon3-1.svg";

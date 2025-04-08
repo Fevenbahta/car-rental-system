@@ -11,8 +11,7 @@ const MostSearched = () => {
   return (
     <div className="most-searched-container">
        <p
-        className="popular p-2 rounded inline-block"
-        style={{ backgroundColor: "#E0F7FF", color: "#1572D3" }}
+        
       >
         Popular Rental Deals
       </p>
@@ -48,7 +47,7 @@ const MostSearched = () => {
 
 
     <p className="price-info">
-      <i className="fas fa-dollar-sign icon" />
+    
       <strong>Price</strong>&nbsp;{vehicle.price} ETB/Day
     </p>
 

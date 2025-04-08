@@ -306,7 +306,7 @@
   .booking-modal__car-info__dates {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: rem;
   }
   
   .booking-modal__car-info__dates h5 {

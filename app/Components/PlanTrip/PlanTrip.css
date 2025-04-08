@@ -78,7 +78,11 @@
     text-align: center;
     padding: 1rem 6rem;
   }
+  .smaller{
   
+    width:380px;
+    padding-top: 0px;
+  }
   @media (max-width: 500px) {
     .plan-container__boxes__box {
       padding: 1rem 1rem;

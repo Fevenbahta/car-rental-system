@@ -1,125 +1,157 @@
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #ffffff; /* White background */
-}
-
-.container {
-    max-width: 600px;
-    margin: 100px auto; /* Centered with more space on top */
-    padding: 30px;
-    background: white;
-    border-radius: 17px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
-    text-align: center; /* Center text */
-    position: relative; /* Allow positioning of the "Forgot Password?" link */
-    width: 1000px;
-}
-
-.forgot-password {
-    text-align: right;
-    font-size: 19px;
-    color: rgb(17, 17, 17);
-    cursor: pointer;
-    margin: 15px 0; /* Added margin for spacing */
-  }
-  
-
-h1 {
-    margin-top: 10px;
- 
-    margin-bottom: 60px;
-    font-size: 32px; /* Larger font size */
-    font-weight: bold;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #212122; /* Light gray border */
-    border-radius: 17px; /* Rounded corners */
-    box-sizing: border-box;
-    font-size: 20px; /* Larger font size */
-    
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 12px; /* Rounded corners */
-    cursor: pointer;
-    font-size: 20px; /* Larger font size */
-    margin: 10px 0; /* Margin between buttons */
-}
-
-button.primary {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-}
-
-button.primary:hover {
-    background-color: #007bff; /* Darker blue on hover */
-}
-
-button.secondary {
-    background-color: white; /* White background */
-    color: #333; /* Dark text */
-}
-
-button.secondary:hover {
-    background-color: #f8f9fa; /* Light gray on hover */
-}
-
-.separator {
-    margin: 20px 0; /* Space above and below */
-    font-size: 20px;
-    color: #999; /* Light gray for the separator */
-}
-
-.social-button {
-    background-color: white; /* White background */
-    color: #333; /* Dark text */
-    border: 1px solid #ced4da; /* Light gray border */
+/* Overall container */
+.min-h-screen {
+    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-color: #f7fafc; /* light gray background */
+    padding: 40px; /* Increased padding */
 }
 
-.social-button:hover {
-    background-color: #f8f9fa; /* Light gray on hover */
+/* Login box */
+.bg-white {
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-radius: 24px; /* Larger rounded corners */
+    width: 100%;
+    max-width: 700px; /* Increased width */
+    padding: 60px; /* Increased padding */
 }
 
-.social-button img {
-    width: 40px; /* Adjust logo size */
-    margin-right: 8px; /* Space between logo and text */
+/* Heading */
+.text-4xl {
+    font-size: 48px; /* Larger font size */
+    font-weight: 700;
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 40px; /* Increased spacing */
 }
 
-.signup {
-    font-weight: bold; /* Bold text for Sign Up */
-    color: black; /* Black color */
-    font-size: 20px;
-}
-p{
-    font-size: 20px;
-
-}
-.guest {
-    font-size: 19px; /* Smaller font size */
-    color: #777; /* Gray color */
+/* Form fields */
+input, select {
+    width: 100%;
+    padding: 22px 28px; /* Larger padding */
+    border-radius: 12px; /* Larger rounded borders */
+    border: 1px solid #e2e8f0; /* Light gray border */
+    font-size: 20px; /* Larger text */
+    outline: none;
 }
 
-label {
-    display: block; /* Block display for labels */
-    margin: 10px 0 5px; /* Space above and below labels */
-    font-size: 19px; /* Font size for labels */
-    color: #333; /* Dark text color */
-    text-align: left; /* Left align the text */
-    font-weight: bold;
+input:focus, select:focus {
+    border-color: #3182ce; /* Focus border color */
+    box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5); /* Focus shadow */
 }
 
-/* Additional styling for the country code placeholder */
+/* Phone number */
 input[type="tel"] {
-    padding-left: 40px; /* Space for the country code */
+    width: calc(100% - 110px); /* Adjust for country code select */
+}
+
+select {
+    width: 110px; /* Adjusted width for country code */
+    padding: 20px 14px; /* Adjusted padding */
+}
+
+/* Error messages */
+.text-red-600 {
+    color: #e53e3e;
+    font-size: 18px; /* Larger error text */
+    margin-top: 12px;
+}
+
+/* Password visibility toggle */
+span {
+    cursor: pointer;
+    font-size: 32px; /* Larger icon size */
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+}
+
+/* Submit button */
+button[type="submit"] {
+    background-color: #3182ce;
+    color: #ffffff;
+    padding: 24px 0;
+    border-radius: 12px;
+    font-size: 24px; /* Larger text */
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #2b6cb0;
+}
+
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Forgot password link */
+.text-right {
+    font-size: 18px;
+    text-align: right;
+    color: #3182ce;
+    cursor: pointer;
+}
+
+.text-right:hover {
+    text-decoration: underline;
+}
+
+/* Sign up link */
+.text-blue-600 {
+    font-size: 18px;
+    color: #3182ce;
+    cursor: pointer;
+}
+
+.text-blue-600:hover {
+    text-decoration: underline;
+}
+
+/* Google login button */
+/* Google login button */
+button {
+    padding: 28px; /* Increased padding */
+    border-radius: 16px; /* Slightly more rounded corners */
+    border: 1px solid #e2e8f0;
+    font-size: 24px; /* Larger font size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #f7fafc;
+}
+
+/* Google logo */
+img {
+    width: 46px; /* Larger Google logo */
+    height: 46px;
+}
+
+
+/* Divider between sections */
+hr {
+    border: 1px solid #e2e8f0;
+    width: 50%;
+}
+
+.text-gray-400 {
+    color: #cbd5e0;
+    font-size: 18px;
+}
+
+/* General spacing */
+.space-y-6 {
+    margin-bottom: 45px;
 }

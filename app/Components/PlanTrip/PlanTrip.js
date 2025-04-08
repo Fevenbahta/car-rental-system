@@ -1,8 +1,8 @@
 'use client'
 
-import SelectCar from "./icon1.svg";
-import Contact from "./icon2.svg";
-import Drive from "./icon3.svg";
+import SelectCar from "./caricon3.jpg";
+import Contact from "./caricon3.jpg";
+import Drive from "./caricon.jpg";
 import Image from "next/image";
 import "./PlanTrip.css";
 import { ScrollReveal } from "reveal-on-scroll-react"
@@ -15,7 +15,7 @@ function PlanTrip() {
         <div className="container">
           <div className="plan-container">
             <div className="plan-container__title">
-              <ScrollReveal.h3>Plan your trip now</ScrollReveal.h3>
+              <ScrollReveal.h3>How It Works</ScrollReveal.h3>
               <ScrollReveal.h2>Quick &amp; easy car rental</ScrollReveal.h2>
             </div>
 
@@ -31,14 +31,13 @@ function PlanTrip() {
 
               <div className="plan-container__boxes__box">
                 <Image src={Contact} alt="icon_img" loading="lazy" />
-                <ScrollReveal.h3>Contact Operator</ScrollReveal.h3>
+                <ScrollReveal.h3>Pick a Date </ScrollReveal.h3>
                 <ScrollReveal.p>
-                  Our knowledgeable and friendly operators are always ready to
-                  help with any questions or concerns
+                  Pick a Date when you want to rent and enjoy the ride.
                 </ScrollReveal.p>
               </div>
 
-              <div className="plan-container__boxes__box">
+              <div className="plan-container__boxes__box smaller">
                 <Image src={Drive} alt="icon_img" loading="lazy" />
                 <ScrollReveal.h3>{`Let's Drive`}</ScrollReveal.h3>
                 <ScrollReveal.p>

@@ -13,12 +13,12 @@ const MobileNavbar = dynamic(() => import('./MobileNavbar/MobileNavbar'));
 function Navbar() {
   const [nav, setNav] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openNav = () => {
     setNav(!nav);
   };
 
-  // Effect to track scroll position
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
@@ -26,6 +26,12 @@ function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Check login status
+  useEffect(() => {
+    const storedPhone = localStorage.getItem("userPhone");
+    setIsLoggedIn(!!storedPhone);
   }, []);
 
   return (
@@ -51,13 +57,13 @@ function Navbar() {
             </div>
             <div className="mobile-navbar__lang-currency">
               <i className="fas fa-globe ml-2"></i> EN
-              <i className="fas fa-moon ml-4"></i> Dark Mode {/* Dark mode toggle */}
+              <i className="fas fa-moon ml-4"></i> Dark Mode
             </div>
           </div>
           <hr />
           <hr className="navbar-divider" />
           <div className="navbar__img">
-            {/* Uncomment if logo is needed */}
+            {/* Optional logo */}
             {/* <a href="/" onClick={() => window.scrollTo(0, 0)}>
               <Image 
                 src={logo}
@@ -70,49 +76,25 @@ function Navbar() {
 
           <div className="navbar__main">
             <ul className="navbar__links">
-              <li>
-                <a className="home-link" href="/">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a className="about-link" href="#about">
-                  About
-                </a>
-              </li>
-              <li>
-                <a className="models-link" href="#pick__section">
-                  How It Works
-                </a>
-              </li>
-              <li>
-                <a className="testi-link" href="#testimonials">
-                  Vehicles
-                </a>
-              </li>
-              <li>
-                <a className="team-link" href="#download">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a className="team-link" href="#download">
-                  Need Help?
-                </a>
-              </li>
+              <li><a className="home-link" href="/">Home</a></li>
+              <li><a className="about-link" href="#about">About</a></li>
+              <li><a className="models-link" href="#pick__section">How It Works</a></li>
+              <li><a className="testi-link" href="#testimonials">Vehicles</a></li>
+              <li><a className="team-link" href="#download">Contact</a></li>
+              <li><a className="team-link" href="#download">Need Help?</a></li>
             </ul>
-            <div className="navbar__buttons">
-            <a className="navbar__buttons__sign-in" href="/login">
-  Sign In
-</a>
 
-              <a className="navbar__buttons__register" href="/register">
-                Register
-              </a>
-            </div>
+            {!isLoggedIn && (
+              <div className="navbar__buttons">
+                <a className="navbar__buttons__sign-in" href="/login">Sign In</a>
+                <a className="navbar__buttons__register" href="/register">Register</a>
+              </div>
+            )}
           </div>
+
           <hr className="navbar-divider" />
-          {/* mobile */}
+
+          {/* mobile hamburger */}
           <div className="mobile-hamb" onClick={openNav}>
             <IconMenu2 width={30} height={30} />
           </div>
