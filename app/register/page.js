@@ -30,6 +30,20 @@ const RegisterPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(""); // Added confirm password error state
   const [generalError, setGeneralError] = useState(""); // Added general error state
   const [countryCode, setCountryCode] = useState("+251");
+ 
+  const generateRandomPassword = () => {
+    const length = 12; // You can change the length if needed
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?'; // Including letters, numbers, and special characters
+    
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    
+    return result;
+  };
+  
+  const randomPassword = generateRandomPassword();
 
   const handleDriverLicenceChange = (e) => {
     setDriverLicence(e.target.files[0]);
@@ -272,8 +286,12 @@ const RegisterPage = () => {
               </span>
             </div>
             {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
-          </div>
-
+               <div>
+        <p style={{ color: "gray", fontSize: "16px" }}>
+          Recommended : <strong>{randomPassword}</strong>
+        </p>
+      </div>  </div>
+   
           <div style={{ flex: 1 }}>
             <label htmlFor="confirm-password">Confirm Password:</label>
             <div style={{ position: "relative" }}>

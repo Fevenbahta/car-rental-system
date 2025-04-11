@@ -19,10 +19,10 @@ const ChooseUs = dynamic(()=>import('./Components/ChooseUs/ChooseUs'))
 const Testimonials = dynamic(()=>import('./Components/Testimonials/Testimonials'))
 const Faq = dynamic(()=>import('./Components/faq/Faq'))
 const Download = dynamic(()=>import('./Components/Download/Download'))
-const About =  dynamic(() => import("./Components/about/AboutUs"))
-const VehicleGroup = dynamic(() => import("./Components/VehicleGroup/VehicleGroup"))
-const Brand = dynamic(() =>import("./Components/Brand/Brand"))
-const Footer = dynamic(()=>import('./Components/Footer/Footer'))
+// const About =  dynamic(() => import("./Components/about/AboutUs"))
+// const VehicleGroup = dynamic(() => import("./Components/VehicleGroup/VehicleGroup"))
+// const Brand = dynamic(() =>import("./Components/Brand/Brand"))
+// const Footer = dynamic(()=>import('./Components/Footer/Footer'))
 
 export default function Home() {
   return (
@@ -31,18 +31,22 @@ export default function Home() {
       <Hero />
    
       <BookCar /> 
-      <About />
+{/*       
+      <About /> */}
+
       <PlanTrip />  {/* <HowItWorks /> */}
       <MostSearched />
-      <Brand />
+      {/* <Brand />
       <VehicleGroup />
-       
+        */}
       {/* <PickCar /> */}
       <ChooseUs />
       <Testimonials />
       <Faq />
       <Download />
-      <Footer />
+{/*       
+      <Footer /> */}
+
     </div>
   );
 }
