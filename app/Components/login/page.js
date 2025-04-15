@@ -32,7 +32,7 @@ const LoginModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-none p-4">
-    <div className="bg-white/60 backdrop-blur-none shadow-2xl rounded-xl w-full max-w-md p-8 space-y-6 relative">
+      <div className="bg-white/60 backdrop-blur-none shadow-2xl rounded-xl w-full max-w-md p-8 space-y-6 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-700 hover:text-red-500 text-xl font-bold"
@@ -113,6 +113,19 @@ const LoginModal = ({
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        {/* Forgot Password Link */}
+        <p className="text-center text-sm mt-4">
+          <span
+            className="text-blue-600 font-semibold cursor-pointer"
+            onClick={() => {
+              router.push('/forgotpassword'); // Navigate to /forgotpassword page
+              onClose();
+            }}
+          >
+            Forgot Password?
+          </span>
+        </p>
 
         <p className="text-center text-sm">
           Don’t have an account?{' '}
