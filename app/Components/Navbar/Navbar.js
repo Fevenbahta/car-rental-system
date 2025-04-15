@@ -1,4 +1,7 @@
 'use client';
+import {  FaGlobe } from 'react-icons/fa';
+import {  FaCommentDots, FaWrench } from 'react-icons/fa';
+
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
@@ -21,6 +24,7 @@ function Navbar() {
   // 🔐 Modal states
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false); // ✅ new register modal
+  const [email, setEmail] = useState('');
 
   const [countryCode, setCountryCode] = useState('+251');
   const [phone, setPhone] = useState('');
@@ -40,8 +44,10 @@ function Navbar() {
     const storedPhone = localStorage.getItem("userPhone");
     const storedName = localStorage.getItem("userName");
     const storedProfilePic = localStorage.getItem("userProfilePic");
+    const storedEmail = localStorage.getItem("userEmail"); // 👈 NEW
     if (storedPhone) {
       setIsLoggedIn(true);
+      setEmail(storedEmail || ''); // 👈 SET EMAIL
       setUserName(storedName || 'User');
       setProfilePic(storedProfilePic || 'https://via.placeholder.com/150'); // Default profile picture
     }
@@ -124,7 +130,8 @@ function Navbar() {
       localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
       localStorage.setItem('userStatus', user.status);
       localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src); // fallback if null
-  
+      localStorage.setItem('userEmail', user.email); // 👈 Save email if available
+      setEmail(user.email); 
       // Set states
       setIsLoggedIn(true);
       setUserName(`${user.first_name} ${user.last_name}`);
@@ -199,51 +206,73 @@ function Navbar() {
         </ul>
       </div>
       {isSidebarOpen && (
-        <div
-          ref={sidebarRef}
-          className="fixed top-0 right-0 z-50 w-64 h-full bg-white shadow-lg pl-6"
-        >
-          <div className="flex items-center mb-4">
-            {/* Profile Picture */}
-            <img
-              src={profileAvatar.src}
-              alt="Profile Picture"
-              className="w-8 h-8 rounded-full mr-4" // Add margin to the right for spacing
-            />
-            {/* Username and Status */}
-            <div>
-              <h2 className="font-semibold text-sm mt-14 text-blue-900">{userName}</h2>
-              <p className="text-blue-900 text-xs">{phone}</p>
-              <p className="text-blue-900 text-xs mt-0 text-green-400">
-                <span className="text-green-300 mr-1">✔</span>{userStatus}
-              </p>
-            </div>
-          </div>
+  <div
+    ref={sidebarRef}
+    className="fixed top-0 right-0 z-50 w-64 h-full bg-gray-900 shadow-lg p-6"
+  >
+    <div className="flex flex-col items-center mb-4 mt-10">
+      <img
+        src={profileAvatar?.src || "/default-avatar.png"}
+        alt="Profile Picture"
+        className="w-16 h-16 rounded-full mb-2"
+      />
+      <div className="text-center">
+        <h2 className="font-semibold text-sm text-white">{userName || "User"}</h2>
+        <p className="text-gray-300 text-xs">{phone || "N/A"}</p>
+        {email && (
+    <p className="text-gray-400 text-xs">{email}</p> // 👈 Email line
+  )}
+        <p className="text-green-400 text-xs">
+          <span className="mr-1">✔</span>{userStatus || "Active"}
+        </p>
+      </div>
+    </div>
 
-          <hr className="my-4" />
+    <hr className="my-4 border-gray-700" />
 
-          {/* Sidebar Links with Blue-Black Icons */}
-          <ul className="w-full">
-            <li className="mb-4 text-blue-900 cursor-pointer flex items-center">
-              <FaUser className="mr-3 text-blue-900 text-xl" />
-              <a href="/profile">Manage Profile</a>
-            </li>
-            <li className="mb-4 text-blue-900 cursor-pointer flex items-center">
-              <FaCogs className="mr-3 text-blue-900 text-xl" />
-              <a href="/settings">Settings</a>
-            </li>
-            <li className="text-red-600 cursor-pointer flex items-center" onClick={handleLogout}>
-              <FaSignOutAlt className="mr-3 text-blue-900 text-xl" />
-              Logout
-            </li>
-          </ul>
-        </div>
-      )}
+    <ul className="w-full mt-6">
+      <li className="mb-4 text-white cursor-pointer flex items-center">
+        <FaUser className="mr-3 text-grey-400 text-sm" />
+        <a href="/profile">Manage Account</a>
+      </li>
+      <li className="mb-4 text-white cursor-pointer flex items-center">
+        <FaGlobe className="mr-3 text-grey-400 text-sm" />
+        <a href="/language">Language</a>
+      </li>
+      <li className="mb-4 text-white cursor-pointer flex items-center">
+        <FaWrench className="mr-3 text-grey-400 text-sm" />
+        <a href="/settings">Settings</a>
+      </li>
+      <li className="mb-4 text-white cursor-pointer flex items-center">
+        <FaCommentDots className="mr-3 text-grey-400 text-sm" />
+        <a href="/feedback">Feedback</a>
+      </li>
+    </ul>
+
+    <hr className="my-4 border-gray-700" />
+
+    <div className="flex justify-center">
+      <button
+        onClick={handleLogout}
+        className="flex items-center bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600"
+      >
+        <FaSignOutAlt className="mr-2 text-white text-xl" />
+        Logout
+      </button>
+    </div>
+  </div>
+)}
+
+
 
       {/* LOGIN MODAL */}
       <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
+  isOpen={isLoginOpen}
+  onClose={() => setIsLoginOpen(false)}
+  onShowRegister={() => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(true);
+  }}
         phone={phone}
         setPhone={setPhone}
         password={password}
@@ -262,9 +291,14 @@ function Navbar() {
 
       {/* ✅ REGISTER MODAL */}
       <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-      />
+  isOpen={isRegisterOpen}
+  onClose={() => setIsRegisterOpen(false)}
+  onShowLogin={() => {
+    setIsRegisterOpen(false); // Close register modal
+    setIsLoginOpen(true);     // Open login modal
+  }}
+/>
+
     </>
   );
 }

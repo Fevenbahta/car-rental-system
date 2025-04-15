@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Logo from "./logo1.png";
 import googleLogo from "./google-logo.png";
 import LoginModal from "../login/page";
-const RegisterModal = ({ isOpen, onClose }) => {
+const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
   if (!isOpen) return null;
 
   const [firstName, setFirstName] = useState("");
@@ -21,6 +21,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   const [digitalId, setDigitalId] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -166,12 +167,13 @@ const RegisterModal = ({ isOpen, onClose }) => {
         <div className="text-center mt-4 space-y-2">
           <p className="text-sm">
             Already have an account?{" "}
-             <button
-              onClick={onShowLogin} // This triggers the login modal
-              className="text-blue-600 hover:underline"
-            >
-              Login
-            </button>
+            <button
+  onClick={onShowLogin}
+  className="text-blue-600 hover:underline"
+>
+  Login
+</button>
+
           </p>
           <p className="text-gray-400 text-sm">or</p>
           <button className="flex items-center gap-2 border mx-auto px-10 py-2 rounded hover:bg-gray-100">

@@ -8,6 +8,7 @@ import Logo from './logo1.png';
 const LoginModal = ({
   isOpen,
   onClose,
+  onShowRegister, // ✅ add this line
   phone,
   setPhone,
   password,
@@ -130,14 +131,12 @@ const LoginModal = ({
         <p className="text-center text-sm">
           Don’t have an account?{' '}
           <span
-            className="text-blue-600 font-semibold cursor-pointer"
-            onClick={() => {
-              router.push('/register');
-              onClose();
-            }}
-          >
-            Sign Up
-          </span>
+  className="text-blue-600 font-semibold cursor-pointer"
+  onClick={onShowRegister}
+>
+  Sign Up
+</span>
+
         </p>
       </div>
     </div>

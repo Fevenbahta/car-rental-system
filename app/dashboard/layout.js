@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-b from-blue-900 to-black text-white p-4">
+      <div className="w-64 bg-gradient-to-b from-blue-900 to-black text-white pl-2">
         <h2 className="text-2xl font-bold mb-6">Car Rent</h2>
         <MainMenu currentPath={pathname} />
       </div>
@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }) {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="w-full  text-blue-900 p-4">
+        <div className="w-full  text-blue-900 ">
           <Header />
         </div>
 
