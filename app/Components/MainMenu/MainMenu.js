@@ -1,25 +1,38 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  FaTachometerAlt,
+  FaCar,
+  FaUsers,
+  FaCheckCircle,
+  FaTools,
+  FaMoneyBillWave,
+  FaClipboardList,
+  FaUserCog,
+  FaCogs,
+  FaHeadset,
+  FaClipboardCheck,
+} from 'react-icons/fa';
 
 // Sidebar Menu Component
 const MainMenu = ({ currentPath }) => {
   const router = useRouter();
 
   const mainMenuItems = [
-    { text: 'Dashboard', path: '/dashboard' },
-    { text: 'Bookings', path: '/dashboard/bookings' },
-    { text: 'Payments', path: '/dashboard/payments' },
-    { text: 'Vehicles', path: '/dashboard/vehicles' },
-    { text: 'Customers', path: '/dashboard/customers' },
-    { text: 'Verification', path: '/dashboard/verification' },
-    { text: 'Approval', path: '/dashboard/approval' },
-    { text: 'Maintenance', path: '/dashboard/maintenance' },
-    { text: 'Support Tickets', path: '/dashboard/support' },
-    
-    { text: 'Account Settings', path: '/dashboard/settings/account' },
-    { text: 'System Config', path: '/dashboard/settings/system' },
+    { text: 'Dashboard', path: '/dashboard', icon: <FaTachometerAlt /> },
+    { text: 'Bookings', path: '/dashboard/bookings', icon: <FaClipboardList /> },
+    { text: 'Payments', path: '/dashboard/payments', icon: <FaMoneyBillWave /> },
+    { text: 'Vehicles', path: '/dashboard/vehicles', icon: <FaCar /> },
+    { text: 'Customers', path: '/dashboard/customers', icon: <FaUsers /> },
+    { text: 'Verification', path: '/dashboard/verification', icon: <FaClipboardCheck /> },
+    { text: 'Approval', path: '/dashboard/approval', icon: <FaCheckCircle /> },
+    { text: 'Maintenance', path: '/dashboard/maintenance', icon: <FaTools /> },
+    { text: 'Support Tickets', path: '/dashboard/support', icon: <FaHeadset /> },
+    { text: 'Account Settings', path: '/dashboard/settings/account', icon: <FaUserCog /> },
+    { text: 'System Config', path: '/dashboard/settings/system', icon: <FaCogs /> },
   ];
+  
 
   const settingsMenuItems = [
   ];
@@ -31,20 +44,22 @@ const MainMenu = ({ currentPath }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white p-4">
       <ul className="space-y-3">
-        {mainMenuItems.map((item) => (
-          <li key={item.text}>
-            <button
-              onClick={() => handleNavigation(item.path)}
-              className={`w-full text-left p-3 rounded-md transition-all duration-200 ${
-                currentPath === item.path
-                  ? 'bg-blue-800'
-                  : 'hover:bg-blue-800 bg-transparent'
-              }`}
-            >
-              {item.text}
-            </button>
-          </li>
-        ))}
+      {mainMenuItems.map((item) => (
+  <li key={item.text}>
+    <button
+      onClick={() => handleNavigation(item.path)}
+      className={`w-full text-left p-2 flex items-center gap-2 rounded-md transition-all duration-200 ${
+        currentPath === item.path
+          ? 'bg-blue-800'
+          : 'hover:bg-blue-800 bg-transparent'
+      }`}
+    >
+      <span className="text-lg">{item.icon}</span>
+      {item.text}
+    </button>
+  </li>
+))}
+
       </ul>
 
       <div className="border-t border-blue-700 my-6"></div>

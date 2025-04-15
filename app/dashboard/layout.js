@@ -9,8 +9,8 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-b from-blue-900 to-black text-white pl-2">
-        <h2 className="text-2xl font-bold mb-6">Car Rent</h2>
+      <div className="w-64 bg-gradient-to-b from-blue-900 to-black text-white pt-2">
+        <h2 className="text-2xl font-bold mb-6">Car Rental Sytem</h2>
         <MainMenu currentPath={pathname} />
       </div>
 
