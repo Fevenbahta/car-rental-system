@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaCreditCard,
   FaHistory,
@@ -8,25 +8,14 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
+import axios from "axios";
 
 export default function PaymentInfo() {
   const [activeTab, setActiveTab] = useState("payment");
-  const [paymentMethods, setPaymentMethods] = useState([
-    {
-      id: 1,
-      type: "Telebirr",
-      last4: "4242",
-      expiry: "12/25",
-      isDefault: true,
-    },
-    {
-      id: 2,
-      type: "Telebirr",
-      last4: "1234",
-      expiry: "06/25",
-      isDefault: false,
-    },
-  ]);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const [transactions, setTransactions] = useState([
     {
@@ -68,22 +57,85 @@ export default function PaymentInfo() {
     },
   });
 
+  useEffect(() => {
+    fetchPaymentMethods();
+  }, []);
+
+  const fetchPaymentMethods = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.get(
+        "https://www.carrentalbackend.emareicthub.com/api/payment-methods",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setPaymentMethods(response.data);
+    } catch (error) {
+      console.error("Failed to fetch payment methods:", error);
+      setError(
+        error.response?.data?.message || "Failed to fetch payment methods"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAddPaymentMethod = () => {
     // Add payment method logic here
     console.log("Adding new payment method");
   };
 
-  const handleDeletePaymentMethod = (id) => {
-    setPaymentMethods(paymentMethods.filter((method) => method.id !== id));
+  const handleDeletePaymentMethod = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      await axios.delete(
+        `https://www.carrentalbackend.emareicthub.com/api/payment-methods/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setMessage({
+        type: "success",
+        text: "Payment method deleted successfully",
+      });
+      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+      fetchPaymentMethods();
+    } catch (error) {
+      console.error("Failed to delete payment method:", error);
+      setError(
+        error.response?.data?.message || "Failed to delete payment method"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSetDefault = (id) => {
-    setPaymentMethods(
-      paymentMethods.map((method) => ({
-        ...method,
-        isDefault: method.id === id,
-      }))
-    );
+    // Implement set default logic
+    console.log("Setting default payment method:", id);
   };
 
   const getStatusColor = (status) => {
@@ -109,6 +161,32 @@ export default function PaymentInfo() {
         return <FaHistory className="text-gray-500" />;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="text-center p-6">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button
+            onClick={fetchPaymentMethods}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -148,40 +226,46 @@ export default function PaymentInfo() {
             </button>
           </div>
 
+          {message.text && (
+            <div
+              className={`mb-4 p-4 rounded ${
+                message.type === "success"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {message.text}
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {paymentMethods.map((method) => (
               <div key={method.id} className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      {method.type === "credit" ? "Credit Card" : "Debit Card"}
+                      {method.card_type} ending in {method.last_four}
                     </h3>
                     <p className="text-gray-500">
-                      **** **** **** {method.last4}
+                      Expires {method.expiry_month}/{method.expiry_year}
                     </p>
-                    <p className="text-gray-500">Expires {method.expiry}</p>
                   </div>
-                  {method.isDefault && (
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                      Default
-                    </span>
-                  )}
-                </div>
-                <div className="mt-4 flex justify-end space-x-2">
-                  {!method.isDefault && (
+                  <div className="mt-4 flex justify-end space-x-2">
+                    {!method.isDefault && (
+                      <button
+                        onClick={() => handleSetDefault(method.id)}
+                        className="text-blue-500 hover:text-blue-600"
+                      >
+                        Set as Default
+                      </button>
+                    )}
                     <button
-                      onClick={() => handleSetDefault(method.id)}
-                      className="text-blue-500 hover:text-blue-600"
+                      onClick={() => handleDeletePaymentMethod(method.id)}
+                      className="text-red-500 hover:text-red-600"
                     >
-                      Set as Default
+                      <FaTrash />
                     </button>
-                  )}
-                  <button
-                    onClick={() => handleDeletePaymentMethod(method.id)}
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    <FaTrash />
-                  </button>
+                  </div>
                 </div>
               </div>
             ))}

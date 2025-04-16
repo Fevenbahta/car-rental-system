@@ -1,51 +1,86 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaStar, FaEdit, FaTrash, FaFlag, FaUser, FaCar } from "react-icons/fa";
+import axios from "axios";
 
 export default function Reviews() {
   const [activeTab, setActiveTab] = useState("given");
   const [editingReview, setEditingReview] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
-  const reviews = [
-    {
-      id: 1,
-      type: "given",
-      title: "Great experience with the Toyota Camry",
-      rating: 4.5,
-      comment:
-        "The car was in excellent condition and the owner was very responsive.",
-      date: "2024-03-15",
-      status: "published",
-      car: {
-        make: "Toyota",
-        model: "Camry",
-        year: 2022,
-        image: "/images/cars/toyota-camry.jpg",
-      },
-    },
-    {
-      id: 2,
-      type: "received",
-      title: "Perfect rental experience",
-      rating: 5,
-      comment: "The renter took great care of my car and returned it on time.",
-      date: "2024-03-10",
-      status: "published",
-      reviewer: {
-        name: "John Doe",
-        avatar: "/images/avatars/john-doe.jpg",
-      },
-    },
-  ];
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.get(
+        "https://www.carrentalbackend.emareicthub.com/api/reviews/my-reviews",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setReviews(response.data);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+      setError(error.response?.data?.message || "Failed to fetch reviews");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (review) => {
     setEditingReview(review);
   };
 
-  const handleDelete = (id) => {
-    // Delete review logic here
-    console.log("Deleting review:", id);
+  const handleDeleteReview = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      await axios.delete(
+        `https://www.carrentalbackend.emareicthub.com/api/reviews/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setMessage({
+        type: "success",
+        text: "Review deleted successfully",
+      });
+      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+      fetchReviews();
+    } catch (error) {
+      console.error("Failed to delete review:", error);
+      setError(error.response?.data?.message || "Failed to delete review");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReport = (id) => {
@@ -60,33 +95,43 @@ export default function Reviews() {
   };
 
   const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`star-${i}`} className="text-yellow-400" />);
-    }
-
-    if (hasHalfStar) {
-      stars.push(
+    return Array(5)
+      .fill(0)
+      .map((_, index) => (
         <FaStar
-          key="half-star"
-          className="text-yellow-400"
-          style={{ clipPath: "inset(0 50% 0 0)" }}
+          key={index}
+          className={`${index < rating ? "text-yellow-400" : "text-gray-300"}`}
         />
-      );
-    }
-
-    const emptyStars = 5 - stars.length;
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaStar key={`empty-${i}`} className="text-gray-300" />);
-    }
-
-    return stars;
+      ));
   };
 
   const filteredReviews = reviews.filter((review) => review.type === activeTab);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="text-center p-6">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button
+            onClick={fetchReviews}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -195,7 +240,7 @@ export default function Reviews() {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleDelete(review.id)}
+                      onClick={() => handleDeleteReview(review.id)}
                       className="text-red-500 hover:text-red-600"
                     >
                       <FaTrash />

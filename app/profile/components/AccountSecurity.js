@@ -1,22 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { FaShieldAlt, FaTrash, FaLock } from "react-icons/fa";
+import {
+  FaShieldAlt,
+  FaTrash,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+import axios from "axios";
 
 export default function AccountSecurity() {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    current_password: "",
+    new_password: "",
+    new_password_confirmation: "",
+  });
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const handlePasswordChange = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const togglePasswordVisibility = (field) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
-    // Add password change logic here
-    console.log("Password change requested");
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      if (formData.new_password !== formData.new_password_confirmation) {
+        throw new Error("New passwords do not match");
+      }
+
+      const response = await axios.post(
+        "https://www.carrentalbackend.emareicthub.com/api/update-password",
+        {
+          current_password: formData.current_password,
+          new_password: formData.new_password,
+          new_password_confirmation: formData.new_password_confirmation,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setMessage({
+        type: "success",
+        text: "Password updated successfully",
+      });
+      setFormData({
+        current_password: "",
+        new_password: "",
+        new_password_confirmation: "",
+      });
+    } catch (error) {
+      console.error("Password update failed:", error);
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to update password",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteAccount = () => {
@@ -29,54 +101,115 @@ export default function AccountSecurity() {
     <div className="space-y-6">
       {/* Change Password Section */}
       <div className="bg-white rounded-lg shadow p-6">
+        {message.text && (
+          <div
+            className={`mb-4 p-4 rounded ${
+              message.type === "success"
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
         <div className="flex items-center space-x-3 mb-6">
           <FaLock className="text-blue-500 text-xl" />
-          <h2 className="text-2xl font-semibold">Change Password</h2>
+          <h2 className="text-2xl font-semibold">Account Security</h2>
         </div>
+
         <form onSubmit={handlePasswordChange} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Current Password
             </label>
-            <input
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword.current ? "text" : "password"}
+                name="current_password"
+                value={formData.current_password}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("current")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword.current ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               New Password
             </label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword.new ? "text" : "password"}
+                name="new_password"
+                value={formData.new_password}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("new")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword.new ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Confirm New Password
             </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword.confirm ? "text" : "password"}
+                name="new_password_confirmation"
+                value={formData.new_password_confirmation}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("confirm")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword.confirm ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            disabled={loading}
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
           >
-            Update Password
+            {loading ? "Updating..." : "Update Password"}
           </button>
         </form>
+
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Password Requirements
+          </h3>
+          <ul className="text-sm text-gray-600 space-y-1">
+            <li>• Minimum 6 characters long</li>
+            <li>• Include at least one number</li>
+            <li>• Include at least one special character</li>
+            <li>• Include both uppercase and lowercase letters</li>
+          </ul>
+        </div>
       </div>
 
       {/* Two-Factor Authentication Section */}
