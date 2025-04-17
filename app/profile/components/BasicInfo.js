@@ -1,224 +1,270 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import { FaEdit, FaCamera } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaBirthdayCake,
+  FaVenusMars,
+  FaMars,
+  FaVenus,
+  FaChevronDown,
+} from "react-icons/fa";
 import axios from "axios";
 
 export default function BasicInfo() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    first_name: "",
-    last_name: "",
+  const [userInfo, setUserInfo] = useState({
+    name: "",
     email: "",
     phone: "",
     address: "",
-    city: "",
-    birth_date: "",
-    avatar: "/default-avatar.png",
+    birthday: "",
+    gender: "",
+    nationalId: "",
+    licenseNumber: "",
+    licenseExpiry: "",
+    profilePic: "",
+    status: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState({ type: "", text: "" });
+
+  const [errors, setErrors] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUserInfo, setNewUserInfo] = useState({});
+  const [profilePicFile, setProfilePicFile] = useState(null);
+
+  const genderOptions = [
+    { value: "male", label: "Male", icon: "♂" },
+    { value: "female", label: "Female", icon: "♀" },
+  ];
 
   useEffect(() => {
-    fetchUserProfile();
+    const stored = {
+      name: localStorage.getItem("userName") || "",
+      email: localStorage.getItem("userEmail") || "",
+      phone: localStorage.getItem("userPhone") || "",
+      address: localStorage.getItem("userAddress") || "",
+      birthday: localStorage.getItem("userBirthday") || "",
+      gender: localStorage.getItem("userGender") || "",
+      nationalId: localStorage.getItem("userNationalId") || "",
+      licenseNumber: localStorage.getItem("userLicenseNumber") || "",
+      licenseExpiry: localStorage.getItem("userLicenseExpiry") || "",
+      status: localStorage.getItem("userStatus") || "",
+      profilePic:
+        localStorage.getItem("userProfilePic") ||
+        "https://via.placeholder.com/150",
+    };
+    setUserInfo(stored);
+    setNewUserInfo(stored);
   }, []);
-
-  const fetchUserProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
-
-      const response = await axios.get(
-        "https://www.carrentalbackend.emareicthub.com/api/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const userData = response.data;
-      setProfileData({
-        first_name: userData.first_name || "",
-        last_name: userData.last_name || "",
-        email: userData.email || "",
-        phone: userData.phone || "",
-        address: userData.address || "",
-        city: userData.city || "",
-        birth_date: userData.birth_date || "",
-        avatar: userData.avatar || "/default-avatar.png",
-      });
-    } catch (error) {
-      console.error("Failed to fetch user profile:", error);
-      setError(error.response?.data?.message || "Failed to fetch profile");
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProfileData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setNewUserInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setProfilePicFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileData((prev) => ({
-          ...prev,
-          avatar: reader.result,
-        }));
+        setNewUserInfo((prev) => ({ ...prev, profilePic: reader.result }));
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveChanges = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  const validateFields = () => {
+    let valid = true;
+    let newErrors = {};
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
-
-      const formData = new FormData();
-      Object.keys(profileData).forEach((key) => {
-        if (key !== "avatar" && profileData[key] !== null) {
-          formData.append(key, profileData[key]);
-        }
-      });
-
-      if (profileData.avatar instanceof File) {
-        formData.append("avatar", profileData.avatar);
-      }
-
-      const response = await axios.put(
-        "https://www.carrentalbackend.emareicthub.com/api/users/me",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      setMessage({ type: "success", text: "Profile updated successfully" });
-      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Update failed:", error);
-      setError(error.response?.data?.message || "Failed to update profile");
-      setMessage({
-        type: "error",
-        text: error.response?.data?.message || "Failed to update profile",
-      });
-    } finally {
-      setLoading(false);
+    if (!newUserInfo.name.trim()) {
+      valid = false;
+      newErrors.name = "Name is required";
     }
+
+    if (!/^[\d]{10,15}$/.test(newUserInfo.phone)) {
+      valid = false;
+      newErrors.phone = "Phone must be 10-15 digits";
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(newUserInfo.email)) {
+      valid = false;
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!newUserInfo.licenseNumber.trim()) {
+      valid = false;
+      newErrors.licenseNumber = "License number is required";
+    }
+
+    if (!newUserInfo.address.trim()) {
+      valid = false;
+      newErrors.address = "Address is required";
+    }
+
+    if (!newUserInfo.gender) {
+      valid = false;
+      newErrors.gender = "Gender is required";
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSave = () => {
+    if (!validateFields()) return;
+
+    setUserInfo(newUserInfo);
+    Object.entries(newUserInfo).forEach(([key, value]) => {
+      localStorage.setItem(
+        `user${key.charAt(0).toUpperCase() + key.slice(1)}`,
+        value
+      );
+    });
+    setIsEditing(false);
+  };
+
+  const renderInput = (label, name, type = "text") => {
+    if (name === "gender") {
+      return (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            {label}
+          </label>
+          <div className="relative">
+            <select
+              name="gender"
+              value={newUserInfo.gender}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              className={`w-full px-4 py-2 pr-10 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                !isEditing ? "bg-gray-100" : ""
+              } ${errors.gender ? "border-red-500" : "border-gray-300"}`}
+            >
+              <option value="">Select Gender</option>
+              <option value="male" className="flex items-center">
+                <FaMars className="inline-block mr-2" />
+                Male
+              </option>
+              <option value="female" className="flex items-center">
+                <FaVenus className="inline-block mr-2" />
+                Female
+              </option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <FaChevronDown className="text-gray-400" />
+            </div>
+          </div>
+          {errors.gender && (
+            <p className="text-red-500 text-sm">{errors.gender}</p>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+        <input
+          type={type}
+          name={name}
+          value={newUserInfo[name]}
+          onChange={handleInputChange}
+          disabled={!isEditing}
+          className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            !isEditing ? "bg-gray-100" : ""
+          } ${errors[name] ? "border-red-500" : "border-gray-300"}`}
+        />
+        {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+      </div>
+    );
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      {message.text && (
-        <div
-          className={`mb-4 p-4 rounded ${
-            message.type === "success"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}
-        >
-          {message.text}
-        </div>
-      )}
+    <div className="p-8 bg-white rounded-xl shadow-lg max-w-4xl mx-auto mt-10">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-8">
+        Basic Information
+      </h2>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Basic Information</h2>
-        <button
-          onClick={() => {
-            if (isEditing) {
-              handleSaveChanges();
-            } else {
-              setIsEditing(true);
-            }
-          }}
-          className="flex items-center space-x-2 text-blue-500 hover:text-blue-600"
-          disabled={loading}
-        >
-          <FaEdit />
-          <span>
-            {isEditing
-              ? loading
-                ? "Saving..."
-                : "Save Changes"
-              : "Edit Profile"}
-          </span>
-        </button>
+      <div className="flex items-center gap-6 mb-8">
+        <div className="relative">
+          <img
+            src={newUserInfo.profilePic}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-2 border-gray-200"
+          />
+          {isEditing && (
+            <label className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full cursor-pointer hover:bg-blue-600">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePicChange}
+                className="hidden"
+              />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </label>
+          )}
+        </div>
+        <div>
+          <p className="text-xl font-medium text-gray-800">
+            {userInfo.name || "N/A"}
+          </p>
+          <p className="text-sm text-gray-500">
+            {userInfo.status || "Unverified"}
+          </p>
+        </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Profile Picture */}
-        <div className="flex-shrink-0">
-          <div className="relative w-32 h-32 rounded-full overflow-hidden">
-            <img
-              src={profileData.avatar}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-            {isEditing && (
-              <label className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-                <FaCamera className="text-white text-xl" />
-              </label>
-            )}
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderInput("Full Name", "name")}
+        {renderInput("Email", "email")}
+        {renderInput("Phone Number", "phone")}
+        {renderInput("Address", "address")}
+        {renderInput("Birthday", "birthday", "date")}
+        {renderInput("Gender", "gender")}
+        {renderInput("National ID / Passport No.", "nationalId")}
+        {renderInput("Driver's License Number", "licenseNumber")}
+        {renderInput("License Expiry Date", "licenseExpiry", "date")}
+      </div>
 
-        {/* Profile Fields */}
-        <div className="flex-grow space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { label: "First Name", name: "first_name" },
-              { label: "Last Name", name: "last_name" },
-              { label: "Email", name: "email", type: "email" },
-              { label: "Phone", name: "phone", type: "tel" },
-              { label: "Address", name: "address" },
-              { label: "City", name: "city" },
-              { label: "Birth Date", name: "birth_date", type: "date" },
-            ].map(({ label, name, type = "text" }) => (
-              <div key={name}>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {label}
-                </label>
-                {isEditing ? (
-                  <input
-                    type={type}
-                    name={name}
-                    value={profileData[name]}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                ) : (
-                  <p className="text-gray-900">{profileData[name]}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="mt-8 flex justify-end gap-4">
+        {!isEditing ? (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-500 transition-colors"
+          >
+            Edit Profile
+          </button>
+        ) : (
+          <button
+            onClick={handleSave}
+            className="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-500 transition-colors"
+          >
+            Save Changes
+          </button>
+        )}
       </div>
     </div>
   );

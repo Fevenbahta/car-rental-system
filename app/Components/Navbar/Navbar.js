@@ -124,13 +124,14 @@ function Navbar() {
   
       const data = await response.json();
       const user = data.user;
-  
+  console.log("this is login data",data)
       // Save values to localStorage
       localStorage.setItem('userPhone', user.phone);
       localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
       localStorage.setItem('userStatus', user.status);
       localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src); // fallback if null
       localStorage.setItem('userEmail', user.email); // 👈 Save email if available
+      localStorage.setItem('token',data.token)
       setEmail(user.email); 
       // Set states
       setIsLoggedIn(true);
