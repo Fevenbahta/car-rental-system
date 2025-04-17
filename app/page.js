@@ -8,7 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 // const register = dynamic(()=>import('./Components/register/register'))
 // const OTP = dynamic(()=>import('./Components/otpverification/otpverification'))
 // const forgetpassword = dynamic(()=>import('./Components/forgotpassword/forgotpassword'))
-const Navbar = dynamic(()=>import('./Components/Navbar/Navbar'))
+const Navbar = dynamic(()=>import('./Components/Navbar/Navbar.jsx'))
 const Hero = dynamic(()=>import('./Components/Hero/Hero'))
 const BookCar = dynamic(()=>import('./Components/BookCar/BookCar'))
 const HowItWorks = dynamic(()=>import('./Components/HowItWorks/HowItWorks'))

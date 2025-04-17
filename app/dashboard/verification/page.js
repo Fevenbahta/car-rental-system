@@ -1,71 +1,105 @@
 "use client";
 
-import { useState } from "react";
-import { FaSearch } from "react-icons/fa"; // For Search Icon
+import { useState, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// Same import and state setup as before
 
 export default function CustomerVerificationPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Sample customer data
-  const customers = [
-    {
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "123-456-7890",
-      status: "Pending",
-      location: "New York",
-      nationalId: "NY123456789",
-      passport: "P123456789",
-      files: ["File 1", "File 2"], // Example files
-    },
-    {
-      name: "Jane Smith",
-      email: "jane@example.com",
-      phone: "987-654-3210",
-      status: "Pending",
-      location: "California",
-      nationalId: "CA987654321",
-      passport: "P987654321",
-      files: ["File 3", "File 4"], // Example files
-    },
-    // Add more customers here
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  // Filtering customers based on the search term
-  const filteredCustomers = customers.filter((customer) => {
-    return (
-      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.phone.includes(searchTerm)
-    );
-  });
+    fetch("https://www.carrentalbackend.emareicthub.com/api/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data.users)) {
+          const pendingOnly = data.users.filter(
+            (user) => user.status === "Pending"
+          );
+
+          const customersWithFullNames = pendingOnly.map((customer) => ({
+            ...customer,
+            name: `${customer.first_name} ${customer.last_name}`,
+          }));
+
+          setCustomers(customersWithFullNames);
+        } else {
+          console.error("Unexpected data format", data);
+        }
+      })
+      .catch((error) => console.error("Error fetching customers:", error));
+  }, []);
+
+  const filteredCustomers = customers.filter((customer) =>
+    [customer.name, customer.email, customer.phone]
+      .some((field) =>
+        field?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  );
 
   const handleCustomerSelection = (customer) => {
     setSelectedCustomer(customer);
     setIsModalOpen(true);
   };
 
-  const handleApprove = () => {
-    // Perform approval action
-    alert(`Customer ${selectedCustomer.name} has been approved!`);
-    setIsModalOpen(false); // Close the modal after approval
+  const handleApprove = async () => {
+    if (!selectedCustomer) return;
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const res = await fetch(
+        `https://www.carrentalbackend.emareicthub.com/api/admin/users/${selectedCustomer.id}/verify`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: "Approved" }),
+        }
+      );
+
+      if (res.ok) {
+        toast.success(`Customer ${selectedCustomer.name} has been approved!`);
+        setCustomers(customers.filter((c) => c.id !== selectedCustomer.id));
+        setIsModalOpen(false);
+      } else {
+        toast.error("Approval failed.");
+      }
+    } catch (error) {
+      console.error("Approval error:", error);
+      toast.error("An error occurred.");
+    }
   };
 
   return (
     <div className="bg-white min-h-screen text-gray-900 p-8">
-      <h2 className="text-2xl font-semibold mb-4 text-blue-900">Customer Verification</h2>
-      <p className="text-sm text-gray-600 mb-6">Search and verify customers for approval.</p>
+      <h2 className="text-3xl font-semibold text-blue-800 mb-6">
+        Customer Verification
+      </h2>
+      <p className="text-sm text-gray-600 mb-8">
+        Search and verify customers for approval.
+      </p>
 
-      {/* Filter Section */}
-      <div className="flex gap-4 mb-6">
-        <div className="flex items-center space-x-2">
-          <FaSearch className="text-gray-600" />
+      <div className="flex gap-4 mb-8">
+        <div className="flex items-center space-x-2 border rounded-md p-2 shadow-md w-80">
+          <FaSearch className="text-gray-500" />
           <input
             type="text"
             placeholder="Search by name, email, or phone"
-            className="p-2 text-sm rounded-md bg-gray-100 text-gray-900 placeholder-gray-400 w-64"
+            className="w-full bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -73,94 +107,144 @@ export default function CustomerVerificationPage() {
       </div>
 
       {/* Customer Table */}
-      <table className="min-w-full bg-transparent text-sm border-collapse">
-        <thead>
-          <tr className="text-blue-900">
-            <th className="py-2 px-4 border-b border-gray-300">Customer Name</th>
-            <th className="py-2 px-4 border-b border-gray-300">Email</th>
-            <th className="py-2 px-4 border-b border-gray-300">Phone</th>
-            <th className="py-2 px-4 border-b border-gray-300">Location</th>
-            <th className="py-2 px-4 border-b border-gray-300">Status</th>
-            <th className="py-2 px-4 border-b border-gray-300">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCustomers.map((customer, index) => (
-            <tr
-              key={index}
-              className={`hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
-            >
-              <td className="py-2 px-4 border-b border-gray-300">{customer.name}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.email}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.phone}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.location}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.status}</td>
-              <td className="py-2 px-4 border-b border-gray-300">
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all"
-                  onClick={() => handleCustomerSelection(customer)}
-                >
-                  Verify
-                </button>
-              </td>
+      <div className="overflow-x-auto shadow-lg rounded-lg">
+        <table className="min-w-full bg-transparent text-sm">
+          <thead className="bg-blue-100 text-blue-900">
+            <tr>
+              <th className="py-3 px-6 text-left">Name</th>
+              <th className="py-3 px-6 text-left">Email</th>
+              <th className="py-3 px-6 text-left">Phone</th>
+              <th className="py-3 px-6 text-left">Address</th>
+              <th className="py-3 px-6 text-left">Passport</th>
+              <th className="py-3 px-6 text-left">Digital ID</th>
+              <th className="py-3 px-6 text-left">Driver License</th>
+              <th className="py-3 px-6 text-left">Status</th>
+              <th className="py-3 px-6 text-left">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredCustomers.map((customer, index) => (
+              <tr
+                key={customer.id}
+                className={`hover:bg-gray-50 ${
+                  index % 2 === 0 ? "bg-gray-50" : ""
+                }`}
+              >
+                <td className="py-3 px-6">{customer.name}</td>
+                <td className="py-3 px-6">{customer.email}</td>
+                <td className="py-3 px-6">{customer.phone}</td>
+                <td className="py-3 px-6">{customer.city}</td>
+                <td className="py-3 px-6">
+                  {customer.passport ? (
+                    <a
+                      href={customer.passport}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      Download
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+                <td className="py-3 px-6">
+                  {customer.digital_id ? (
+                    <a
+                      href={customer.digital_id}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      Download
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+                <td className="py-3 px-6">
+                  {customer.driver_liscence ? (
+                    <a
+                      href={customer.driver_liscence}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      Download
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+                <td className="py-3 px-6">{customer.status}</td>
+                <td className="py-3 px-6">
+                  <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all"
+                    onClick={() => handleCustomerSelection(customer)}
+                  >
+                    Verify
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Custom Modal for Customer Details */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-96 mx-auto overflow-auto">
-            <h3 className="text-2xl font-semibold text-blue-900 mb-6 text-center">
-              Customer Details
-            </h3>
-            {selectedCustomer && (
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <p className="font-semibold">Name:</p>
-                  <p>{selectedCustomer.name}</p>
+      {/* Modal */}
+      {isModalOpen && selectedCustomer && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-blue-700 text-white text-center py-4 px-6 rounded-t-2xl">
+              <h3 className="text-xl font-semibold">Customer Details</h3>
+            </div>
+
+            <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+              {[
+                ["Name", selectedCustomer.name],
+                ["Email", selectedCustomer.email],
+                ["Phone", selectedCustomer.phone],
+                ["Address", selectedCustomer.address],
+              ].map(([label, value]) => (
+                <div key={label} className="flex justify-between text-sm">
+                  <span className="font-medium text-gray-700">{label}:</span>
+                  <span className="text-gray-900">{value || "-"}</span>
                 </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Email:</p>
-                  <p>{selectedCustomer.email}</p>
+              ))}
+
+              {[
+                ["Passport", selectedCustomer.passport],
+                ["Digital ID", selectedCustomer.digital_id],
+                ["Driver License", selectedCustomer.driver_license],
+              ].map(([label, url]) => (
+                <div key={label} className="flex justify-between text-sm">
+                  <span className="font-medium text-gray-700">{label}:</span>
+                  {url ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      Download
+                    </a>
+                  ) : (
+                    <span>-</span>
+                  )}
                 </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Phone:</p>
-                  <p>{selectedCustomer.phone}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Location:</p>
-                  <p>{selectedCustomer.location}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">National ID:</p>
-                  <p>{selectedCustomer.nationalId}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-semibold">Passport:</p>
-                  <p>{selectedCustomer.passport}</p>
-                </div>
-                <div>
-                  <strong className="block">Files:</strong>
-                  <ul className="list-disc pl-5 space-y-2">
-                    {selectedCustomer.files.map((file, index) => (
-                      <li key={index}>{file}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
-            <div className="mt-6 flex justify-between">
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3 p-4 border-t">
               <button
-                className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-all"
-                onClick={() => setIsModalOpen(false)} // Close modal
+                className="bg-gray-300 text-gray-800 hover:bg-gray-400 transition px-4 py-2 rounded-md text-sm"
+                onClick={() => setIsModalOpen(false)}
               >
                 Close
               </button>
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all"
-                onClick={handleApprove} // Approve customer
+                className="bg-blue-600 text-white hover:bg-blue-700 transition px-4 py-2 rounded-md text-sm"
+                onClick={handleApprove}
               >
                 Approve
               </button>
@@ -168,6 +252,15 @@ export default function CustomerVerificationPage() {
           </div>
         </div>
       )}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        closeOnClick
+        pauseOnHover
+      />
     </div>
   );
 }
+

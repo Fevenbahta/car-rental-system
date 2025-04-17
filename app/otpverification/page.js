@@ -66,11 +66,22 @@ const VerifyOtpPage = () => {
       if (!response.ok) {
         console.log("Error Response:", data); // Log the error response from the API
         if (data.message === "Invalid or expired OTP.") {
+          
           setGeneralError("The OTP you entered is invalid or expired. Please try again.");
         } else {
           setGeneralError(data.message || "Failed to verify OTP. Please try again.");
         }
       } else {
+        const data = await response.json();
+        const user = data.user;
+  
+        localStorage.setItem('userPhone', user.phone);
+        localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
+        localStorage.setItem('userStatus', user.status);
+        localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src);
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('token', data.token);
+     
         // Successfully verified OTP, redirect to the next step (e.g., dashboard)
         router.push("/#hero");
       }

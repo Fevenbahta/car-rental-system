@@ -1,15 +1,12 @@
 'use client';
-import {  FaGlobe } from 'react-icons/fa';
-import {  FaCommentDots, FaWrench } from 'react-icons/fa';
-
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import LoginModal from "../login/page";
-import RegisterModal from "../register/page"; // ✅ import your RegisterModal
-import profileAvatar from './profile-avator.jpg'; // Import the image
-import { FaUser, FaCogs, FaSignOutAlt } from "react-icons/fa"; // Import icons from react-icons
+import { FaUser, FaGlobe, FaWrench, FaCommentDots, FaCogs, FaSignOutAlt } from "react-icons/fa";
+import LoginModal from "../login/page.jsx";
+import RegisterModal from "../register/page.jsx";
+import profileAvatar from './profile-avator.jpg';
 
 const MobileNavbar = dynamic(() => import('./MobileNavbar/MobileNavbar'));
 
@@ -17,15 +14,14 @@ function Navbar() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [token, setToken] = useState('');
   const [loading, setLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
-  const [userStatus, setUserStatus] = useState('verified'); // Example status
-  const [profilePic, setProfilePic] = useState(profileAvatar); // Use imported image here
-  // 🔐 Modal states
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userStatus, setUserStatus] = useState('verified');
+  const [profilePic, setProfilePic] = useState(profileAvatar);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false); // ✅ new register modal
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [email, setEmail] = useState('');
-
   const [countryCode, setCountryCode] = useState('+251');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -36,20 +32,19 @@ function Navbar() {
   const [loginError, setLoginError] = useState('');
 
   const router = useRouter();
-
-  // Sidebar outside click detection
   const sidebarRef = useRef(null);
 
   useEffect(() => {
     const storedPhone = localStorage.getItem("userPhone");
     const storedName = localStorage.getItem("userName");
     const storedProfilePic = localStorage.getItem("userProfilePic");
-    const storedEmail = localStorage.getItem("userEmail"); // 👈 NEW
+    const storedEmail = localStorage.getItem("userEmail");
     if (storedPhone) {
       setIsLoggedIn(true);
-      setEmail(storedEmail || ''); // 👈 SET EMAIL
+      setEmail(storedEmail || '');
       setUserName(storedName || 'User');
-      setProfilePic(storedProfilePic || 'https://via.placeholder.com/150'); // Default profile picture
+      setProfilePic(storedProfilePic || 'https://via.placeholder.com/150');
+
     }
     setLoading(false);
   }, []);
@@ -60,35 +55,25 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close the sidebar if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsSidebarOpen(false);
       }
     };
-
-    if (isSidebarOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (isSidebarOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSidebarOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem("userPhone");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userProfilePic");
+    localStorage.clear();
     setIsLoggedIn(false);
     setUserName('');
     setProfilePic('');
-    setIsSidebarOpen(false); // Close sidebar on logout
+    setIsSidebarOpen(false);
   };
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar state
-
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handlePhoneChange = (e) => {
@@ -106,41 +91,41 @@ function Navbar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!phone || phoneError || passwordError) return;
-  
     const fullPhone = `0${phone}`;
     const payload = { phone: fullPhone, password };
-  
+
     setIsLoading(true);
     setLoginError('');
-  
+
     try {
       const response = await fetch('https://www.carrental.emareicthub.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-  
-      if (!response.ok) throw new Error('Login failed');
-  
+
+      if (!response.ok) throw new Error('Invalid UserName And Password');
+
       const data = await response.json();
       const user = data.user;
-  
-      // Save values to localStorage
+
       localStorage.setItem('userPhone', user.phone);
       localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
       localStorage.setItem('userStatus', user.status);
-      localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src); // fallback if null
-      localStorage.setItem('userEmail', user.email); // 👈 Save email if available
-      setEmail(user.email); 
-      // Set states
+      localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src);
+      localStorage.setItem('userEmail', user.email);
+      localStorage.setItem('token', data.token);
+       // Log the token after storing it
+console.log("Stored token:", data.token);  // Debugging log to confirm it's stored
+
+      setEmail(user.email);
       setIsLoggedIn(true);
       setUserName(`${user.first_name} ${user.last_name}`);
       setPhone(user.phone);
       setUserStatus(user.status);
-      setProfilePic(user.profile_picture || profileAvatar.src); // fallback
-  
+      setProfilePic(user.profile_picture || profileAvatar.src);
       setIsLoginOpen(false);
-      router.push('/#hero');
+      router.push('/');
     } catch (error) {
       setLoginError(error.message);
     } finally {
@@ -153,7 +138,7 @@ function Navbar() {
   return (
     <>
       {/* TOP BAR */}
-      <div className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center ${scrollPosition > 50 ? 'bg-black bg-opacity-80' : 'bg-transparent'}`}>
+      <div className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center ${scrollPosition > 50 ? 'bg-black bg-opacity-60' : 'bg-transparent'}`}>
         <div className="flex items-center gap-6">
           <span><i className="fas fa-phone-alt mr-2"></i>+1 222-555-33-99</span>
           <span><i className="fas fa-envelope mr-2"></i>sale@carrent.com</span>
@@ -182,9 +167,9 @@ function Navbar() {
           ) : (
             <div className="flex items-center cursor-pointer" onClick={toggleSidebar}>
               <img
-                src={profileAvatar.src}
+             src="/profile-avatar.jpg" 
                 alt="Profile Pic"
-                className="w-8 h-8 rounded-full mr-2"
+                className="w-8 h-10 rounded-full mr-2"
               />
               <span className="text-white">{userName}</span>
             </div>
@@ -194,7 +179,7 @@ function Navbar() {
 
       {/* MAIN NAVBAR */}
       <div 
-        className={`fixed top-11 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-7xl px-6 py-4 ${scrollPosition > 50 ? 'bg-black bg-opacity-80' : 'bg-transparent'} flex justify-center transition-all duration-300`}
+        className={`fixed top-11 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-7xl px-6 py-4 ${scrollPosition > 50 ? 'bg-black bg-opacity-60' : 'bg-transparent'} flex justify-center transition-all duration-300`}
       >
         <ul className="flex gap-6 md:gap-10 text-white text-base font-medium">
           <li><a className="hover:text-blue-500" href="/">Home</a></li>
@@ -212,7 +197,7 @@ function Navbar() {
   >
     <div className="flex flex-col items-center mb-4 mt-10">
       <img
-        src={profileAvatar?.src || "/default-avatar.png"}
+        src={profileAvatar?.src || "//profile-avator.jpg"}
         alt="Profile Picture"
         className="w-16 h-16 rounded-full mb-2"
       />

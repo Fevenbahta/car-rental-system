@@ -2,13 +2,13 @@
 
 import { useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import GoogleLogo from './google-logo.png';
-import Logo from './logo1.png';
+import Image from 'next/image';
+import Flag from 'react-world-flags';
 
 const LoginModal = ({
   isOpen,
   onClose,
-  onShowRegister, // ✅ add this line
+  onShowRegister,
   phone,
   setPhone,
   password,
@@ -25,15 +25,14 @@ const LoginModal = ({
   router,
 }) => {
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'auto';
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-none p-4">
-      <div className="bg-white/60 backdrop-blur-none shadow-2xl rounded-xl w-full max-w-md p-8 space-y-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+      <div className="bg-white/70 backdrop-blur-md shadow-2xl rounded-xl w-full max-w-md p-8 space-y-6 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-700 hover:text-red-500 text-xl font-bold"
@@ -43,42 +42,59 @@ const LoginModal = ({
 
         {/* Logo */}
         <div className="text-center mb-4">
-          <img src={Logo.src} alt="Logo" className="w-20 mx-auto" />
+          <Image src="/logo1.png" alt="/logo1.png" className="mx-auto" width={80} height={80} />
         </div>
 
         <h1 className="text-2xl font-bold text-center text-gray-800">Login</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Phone */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Phone Input */}
           <div>
             <label className="block mb-1 text-sm font-medium">Phone Number</label>
             <div className="flex gap-2 items-center">
-              <select
+  <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
                 className="border rounded-md px-2 py-1 text-sm"
               >
-                <option value="+251">🇪🇹 +251</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+91">🇮🇳 +91</option>
+                <option value="+251">
+                  <Flag code="ET" className="inline-block w-6 h-6 mr-2" />
+                  +251
+                </option>
+                <option value="+1">
+                  <Flag code="US" className="inline-block w-6 h-6 mr-2" />
+                  +1
+                </option>
+                <option value="+44">
+                  <Flag code="GB" className="inline-block w-6 h-6 mr-2" />
+                  +44
+                </option>
+                <option value="+91">
+                  <Flag code="IN" className="inline-block w-6 h-6 mr-2" />
+                  +91
+                </option>
               </select>
+
               <input
                 type="tel"
                 inputMode="numeric"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                onChange={(e) =>
+                  setPhone(e.target.value.replace(/[^0-9]/g, ''))
+                }
                 className={`w-full border px-3 py-2 rounded-md text-sm ${
-                  phoneError ? 'border-red-500' : 'focus:ring-blue-200'
+                  phoneError ? 'border-red-500' : 'focus:ring focus:ring-blue-200'
                 }`}
                 placeholder="912345678"
                 required
               />
             </div>
-            {phoneError && <p className="text-sm text-red-500 mt-1">{phoneError}</p>}
+            {phoneError && (
+              <p className="text-sm text-red-500 mt-1">{phoneError}</p>
+            )}
           </div>
 
-          {/* Password */}
+          {/* Password Input */}
           <div>
             <label className="block mb-1 text-sm font-medium">Password</label>
             <div className="relative">
@@ -87,7 +103,7 @@ const LoginModal = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full border px-3 py-2 rounded-md text-sm ${
-                  passwordError ? 'border-red-500' : 'focus:ring-blue-200'
+                  passwordError ? 'border-red-500' : 'focus:ring focus:ring-blue-200'
                 }`}
                 placeholder="Enter your password"
                 required
@@ -99,13 +115,17 @@ const LoginModal = ({
                 {showPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
               </span>
             </div>
-            {passwordError && <p className="text-sm text-red-500 mt-1">{passwordError}</p>}
+            {passwordError && (
+              <p className="text-sm text-red-500 mt-1">{passwordError}</p>
+            )}
           </div>
 
-          {/* Error */}
-          {loginError && <p className="text-center text-sm text-red-600">{loginError}</p>}
+          {/* Login Error */}
+          {loginError && (
+            <p className="text-center text-sm text-red-600">{loginError}</p>
+          )}
 
-          {/* Submit */}
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm"
@@ -115,12 +135,12 @@ const LoginModal = ({
           </button>
         </form>
 
-        {/* Forgot Password Link */}
+        {/* Forgot Password */}
         <p className="text-center text-sm mt-4">
           <span
             className="text-blue-600 font-semibold cursor-pointer"
             onClick={() => {
-              router.push('/forgotpassword'); // Navigate to /forgotpassword page
+              router.push('/forgotpassword');
               onClose();
             }}
           >
@@ -128,16 +148,24 @@ const LoginModal = ({
           </span>
         </p>
 
+        {/* Register Link */}
         <p className="text-center text-sm">
           Don’t have an account?{' '}
           <span
-  className="text-blue-600 font-semibold cursor-pointer"
-  onClick={onShowRegister}
->
-  Sign Up
-</span>
-
-        </p>
+            className="text-blue-600 font-semibold cursor-pointer"
+            onClick={onShowRegister}
+          >
+            Sign Up
+          </span>
+      
+        <p className="text-gray-900 text-sm mt-1">or</p>
+        <a href="https://www.carrental.emareicthub.com/api/auth/google">
+  <button className="flex items-center gap-2 border mx-auto px-10 py-2 rounded bg-gray-100">
+    <img src="/google-logo.png" alt="Google" className="w-7 h-7" />
+    <span className="text-sm">Continue with Google</span>
+  </button>
+</a>
+ </p>
       </div>
     </div>
   );

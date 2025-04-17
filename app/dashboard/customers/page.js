@@ -1,49 +1,62 @@
 "use client";
 
-import { useState } from "react";
-import { FaSearch } from "react-icons/fa"; // For Search Icon
+import { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 
 export default function CustomersPage() {
+  const [customers, setCustomers] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true); // New loading state
 
-  // Sample customer data
-  const customers = [
-    {
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "123-456-7890",
-      status: "Active",
-      dateRegistered: "2024-01-10",
-      bookingScore: 85,
-      location: "New York",
-      nationalId: "NY123456789",
-      passport: "P123456789",
-    },
-    {
-      name: "Jane Smith",
-      email: "jane@example.com",
-      phone: "987-654-3210",
-      status: "Inactive",
-      dateRegistered: "2023-12-15",
-      bookingScore: 90,
-      location: "California",
-      nationalId: "CA987654321",
-      passport: "P987654321",
-    },
-    // Add more customers here
-  ];
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log("Fetched Token:", token);
 
-  // Filtering customers based on the search and filters
+        if (!token) {
+          console.error("No token found in localStorage.");
+          return;
+        }
+
+        const response = await fetch("https://www.carrentalbackend.emareicthub.com/api/users", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(`HTTP ${response.status}: ${text}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched Customers Data:", data);
+
+        setCustomers(data.users || []);
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+        setLoading(false); // Set loading to false if there is an error
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
   const filteredCustomers = customers.filter((customer) => {
+    const fullName = `${customer.first_name} ${customer.last_name}`;
     const searchMatch =
-      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.phone.includes(searchTerm);
+      fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.phone?.includes(searchTerm);
 
     const statusMatch = statusFilter ? customer.status === statusFilter : true;
-    const locationMatch = locationFilter ? customer.location === locationFilter : true;
+    const locationMatch = locationFilter ? customer.city === locationFilter : true;
 
     return searchMatch && statusMatch && locationMatch;
   });
@@ -72,8 +85,8 @@ export default function CustomersPage() {
           value={statusFilter}
         >
           <option value="">All Status</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
+          <option value="Approved">Approved</option>
+          <option value="Pending">Pending</option>
         </select>
 
         <select
@@ -82,45 +95,97 @@ export default function CustomersPage() {
           value={locationFilter}
         >
           <option value="">All Locations</option>
-          <option value="New York">New York</option>
-          <option value="California">California</option>
+          {[...new Set(customers.map((c) => c.city).filter(Boolean))].map((city, idx) => (
+            <option key={idx} value={city}>
+              {city}
+            </option>
+          ))}
         </select>
       </div>
 
-      {/* Customer Table */}
-      <table className="min-w-full bg-transparent text-sm border-collapse">
-        <thead>
-          <tr className="text-blue-900">
-            <th className="py-2 px-4 border-b border-gray-300">Customer Name</th>
-            <th className="py-2 px-4 border-b border-gray-300">Email</th>
-            <th className="py-2 px-4 border-b border-gray-300">Phone</th>
-            <th className="py-2 px-4 border-b border-gray-300">Status</th>
-            <th className="py-2 px-4 border-b border-gray-300">Date Registered</th>
-            <th className="py-2 px-4 border-b border-gray-300">Booking Score</th>
-            <th className="py-2 px-4 border-b border-gray-300">Location</th>
-            <th className="py-2 px-4 border-b border-gray-300">National ID</th>
-            <th className="py-2 px-4 border-b border-gray-300">Passport</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCustomers.map((customer, index) => (
-            <tr
-              key={index}
-              className={`hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
-            >
-              <td className="py-2 px-4 border-b border-gray-300">{customer.name}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.email}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.phone}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.status}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.dateRegistered}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.bookingScore}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.location}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.nationalId}</td>
-              <td className="py-2 px-4 border-b border-gray-300">{customer.passport}</td>
+      {/* Loading Spinner */}
+      {loading ? (
+        <div className="flex justify-center items-center py-6">
+          <div className="w-16 h-16 border-4 border-t-4 border-blue-600 border-solid rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <table className="min-w-full bg-transparent text-sm border-collapse">
+          <thead>
+            <tr className="text-blue-900">
+              <th className="py-2 px-2 border-b border-gray-300">Customer Name</th>
+              <th className="py-2 px-2 border-b border-gray-300">Email</th>
+              <th className="py-2 px-2 border-b border-gray-300">Phone</th>
+              <th className="py-2 px-2 border-b border-gray-300">Status</th>
+              <th className="py-2 px-2 border-b border-gray-300">Date Registered</th>
+              <th className="py-2 px-2 border-b border-gray-300">Role</th>
+              <th className="py-2 px-2 border-b border-gray-300">City</th>
+              <th className="py-2 px-2 border-b border-gray-300">Address</th>
+              <th className="py-2 px-2 border-b border-gray-300">Birth Date</th>
+              <th className="py-2 px-2 border-b border-gray-300">Driver License</th>
+              <th className="py-2 px-2 border-b border-gray-300">Digital ID</th>
+              <th className="py-2 px-2 border-b border-gray-300">Passport</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredCustomers.map((customer, index) => (
+              <tr key={customer.id} className={`hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}>
+                <td className="py-2 px-2 border-b border-gray-300">
+                  {customer.first_name} {customer.last_name}
+                </td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.email}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.phone}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.status}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{new Date(customer.created_at).toLocaleDateString()}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.role}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.city}</td>
+                <td className="py-2 px-2 border-b border-gray-300">{customer.address || "N/A"}</td>
+                <td className="py-2 px-2 border-b border-gray-300">
+                  {customer.birth_date ? new Date(customer.birth_date).toLocaleDateString() : "N/A"}
+                </td>
+                <td className="py-2 px-2 border-b border-gray-300">
+                  {customer.driver_liscence ? (
+                    <a
+                      href={customer.driver_liscence}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="text-blue-600 underline"
+                    >
+                      Download
+                    </a>
+                  ) : "N/A"}
+                </td>
+                <td className="py-2 px-2 border-b border-gray-300">
+                  {customer.digital_id ? (
+                    <a
+                      href={customer.digital_id}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="text-blue-600 underline"
+                    >
+                      Download
+                    </a>
+                  ) : "N/A"}
+                </td>
+                <td className="py-2 px-2 border-b border-gray-300">
+                  {customer.passport ? (
+                    <a
+                      href={customer.passport}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="text-blue-600 underline"
+                    >
+                      Download
+                    </a>
+                  ) : "N/A"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

@@ -1,9 +1,7 @@
 'use client';
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Logo from "./logo1.png";
-import googleLogo from "./google-logo.png";
-import LoginModal from "../login/page";
+
 const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
   if (!isOpen) return null;
 
@@ -19,9 +17,9 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
   const [birthDate, setBirthDate] = useState("");
   const [driverLicence, setDriverLicence] = useState(null);
   const [digitalId, setDigitalId] = useState(null);
+  const [passport, setPassport] = useState(null);  // State for Passport
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
 
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -61,6 +59,7 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
     formData.append("birth_date", birthDate);
     if (driverLicence) formData.append("driver_liscence", driverLicence);
     if (digitalId) formData.append("digital_id", digitalId);
+    if (passport) formData.append("passport", passport);  // Append passport
 
     try {
       const res = await fetch("https://www.carrental.emareicthub.com/api/register", {
@@ -82,7 +81,7 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
-      <div className="backdrop-blur-sm bg-white/50 w-full max-w-6xl rounded-lg shadow-2xl relative px-6 py-4">
+      <div className="backdrop-blur-md  bg-white/50 w-full max-w-6xl rounded-lg shadow-2xl relative px-6 py-4">
         <button
           onClick={onClose}
           className="absolute top-2 right-4 text-gray-600 hover:text-red-500 text-xl font-bold"
@@ -91,7 +90,7 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
         </button>
 
         <div className="text-center mb-4">
-          <img src={Logo.src} alt="Logo" className="mx-auto w-16" />
+          <img src="/logo1.png" alt="Logo" className="mx-auto w-16" />
           <h2 className="text-xl font-semibold mt-2">Register an Account</h2>
         </div>
 
@@ -104,7 +103,6 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
             <Input label="First Name" value={firstName} onChange={setFirstName} />
             <Input label="Last Name" value={lastName} onChange={setLastName} />
             <Input label="Email" value={email} onChange={setEmail} error={emailError} type="email" />
-
             <div>
               <label className="block text-sm mb-1">Phone</label>
               <div className="flex gap-2">
@@ -152,34 +150,38 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
             <Input label="Birth Date" type="date" value={birthDate} onChange={setBirthDate} />
             <FileInput label="Driver's Licence" onChange={setDriverLicence} />
             <FileInput label="Digital ID" onChange={setDigitalId} />
+
+            {/* Passport input field */}
+            <FileInput label="Passport" onChange={setPassport} />
           </div>
 
           <div className="flex justify-center">
             <button
               type="submit"
-              className="px-20 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded font-semibold"
+              className="px-28 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg mt-5 font-semibold"
             >
               Sign Up
             </button>
           </div>
         </form>
 
-        <div className="text-center mt-4 space-y-2">
+        <div className="text-center mt-4 space-y-1">
           <p className="text-sm">
             Already have an account?{" "}
             <button
-  onClick={onShowLogin}
-  className="text-blue-600 hover:underline"
->
-  Login
-</button>
-
+              onClick={onShowLogin}
+              className="text-blue-600 font-bold hover:underline"
+            >
+              Login
+            </button>
           </p>
-          <p className="text-gray-400 text-sm">or</p>
-          <button className="flex items-center gap-2 border mx-auto px-10 py-2 rounded hover:bg-gray-100">
-            <img src={googleLogo.src} alt="Google" className="w-5 h-5" />
-            <span className="text-sm">Continue with Google</span>
-          </button>
+          <p className="text-gray-900 text-sm">or</p>
+          <a href="https://www.carrental.emareicthub.com/api/auth/google">
+            <button className="flex items-center gap-2 border mx-auto px-10 py-2 rounded bg-gray-100">
+              <img src="/google-logo.png" alt="Google" className="w-7 h-7" />
+              <span className="text-sm">Continue with Google</span>
+            </button>
+          </a>
         </div>
       </div>
     </div>
