@@ -114,6 +114,7 @@ function Navbar() {
 
       const data = await response.json();
       const user = data.user;
+<<<<<<< HEAD:app/Components/Navbar/Navbar.jsx
 
       localStorage.setItem('userPhone', user.phone);
       localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
@@ -125,6 +126,18 @@ function Navbar() {
 console.log("Stored token:", data.token);  // Debugging log to confirm it's stored
 
       setEmail(user.email);
+=======
+  console.log("this is login data",data)
+      // Save values to localStorage
+      localStorage.setItem('userPhone', user.phone);
+      localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
+      localStorage.setItem('userStatus', user.status);
+      localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src); // fallback if null
+      localStorage.setItem('userEmail', user.email); // 👈 Save email if available
+      localStorage.setItem('token',data.token)
+      setEmail(user.email); 
+      // Set states
+>>>>>>> 845526f7456e11e5434e62f1ce08fc4c691fea5b:app/Components/Navbar/Navbar.js
       setIsLoggedIn(true);
       setUserName(`${user.first_name} ${user.last_name}`);
       setPhone(user.phone);
