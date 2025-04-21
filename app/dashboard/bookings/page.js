@@ -73,7 +73,7 @@ export default function BookingPage() {
     <div className="bg-white min-h-screen text-gray-900 p-8">
       {/* Search Section */}
       <div className="mb-8">
-        <h2 className="text-3xl font-semibold text-blue-900 mb-2">Search Bookings</h2>
+        <h2 className="text-1xl font-semibold text-blue-900 mb-2">Search Bookings</h2>
         <div className="flex gap-6 mb-4">
           <div className="flex items-center">
             <FaLocationArrow className="text-blue-600" />

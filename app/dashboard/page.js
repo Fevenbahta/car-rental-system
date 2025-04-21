@@ -12,7 +12,7 @@ import {
   CategoryScale,
   LinearScale,
 } from "chart.js";
-import { FaUsers, FaCar, FaCheckCircle, FaChartLine, FaUserCircle, FaStar } from "react-icons/fa"; // Importing icons
+import { FaUsers, FaCar, FaCheckCircle, FaChartLine, FaStar } from "react-icons/fa"; // Importing icons
 
 // Registering the components needed by Chart.js
 ChartJS.register(
@@ -98,68 +98,62 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen p-8 flex flex-col md:flex-row">
+    <div className="bg-white min-h-screen p-4 flex flex-col md:flex-row">
       {/* Left Side: Graphs and Stats Cards */}
-      <div className="flex-1 mr-8 mb-8 md:mb-0">
+      <div className="flex-1 mr-4 mb-4 md:mb-0">
         {/* Top Bar with Logout Icon */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-extrabold text-blue-900">Dashboard Overview</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold text-blue-900">Dashboard Overview</h1>
         </div>
 
-        {/* Stats Cards with white background */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-xl text-blue-900 text-center transform hover:scale-105 transition-transform duration-300">
-            <div className="bg-blue-900 p-4 rounded-full mb-4 inline-block">
-              <FaUsers className="text-4xl text-white" />
+        {/* Stats Cards with smaller sizes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="bg-white p-3 rounded-lg shadow-md text-blue-900 text-center">
+            <div className="bg-blue-900 p-2 rounded-full mb-2 inline-block">
+              <FaUsers className="text-2xl text-white" />
             </div>
-            <h3 className="text-2xl font-semibold">Total Customers</h3>
-            <p className="text-5xl font-bold">{stats.totalCustomers}</p>
-            <p className="text-sm mt-2 text-gray-600">
-              Total number of customers using the platform.
-            </p>
+            <h3 className="text-lg font-semibold">Total Customers</h3>
+            <p className="text-2xl font-bold">{stats.totalCustomers}</p>
+            <p className="text-xs mt-1 text-gray-600">Platform users</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-xl text-blue-900 text-center transform hover:scale-105 transition-transform duration-300">
-            <div className="bg-blue-900 p-4 rounded-full mb-4 inline-block">
-              <FaCheckCircle className="text-4xl text-white" />
+          <div className="bg-white p-3 rounded-lg shadow-md text-blue-900 text-center">
+            <div className="bg-blue-900 p-2 rounded-full mb-2 inline-block">
+              <FaCheckCircle className="text-2xl text-white" />
             </div>
-            <h3 className="text-2xl font-semibold">Verified Customers</h3>
-            <p className="text-5xl font-bold">{stats.verifiedCustomers}</p>
-            <p className="text-sm mt-2 text-gray-600">
-              Number of customers with verified profiles.
-            </p>
+            <h3 className="text-lg font-semibold">Verified Customers</h3>
+            <p className="text-2xl font-bold">{stats.verifiedCustomers}</p>
+            <p className="text-xs mt-1 text-gray-600">Verified profiles</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-xl text-blue-900 text-center transform hover:scale-105 transition-transform duration-300">
-            <div className="bg-blue-900 p-4 rounded-full mb-4 inline-block">
-              <FaCar className="text-4xl text-white" />
+          <div className="bg-white p-3 rounded-lg shadow-md text-blue-900 text-center">
+            <div className="bg-blue-900 p-2 rounded-full mb-2 inline-block">
+              <FaCar className="text-2xl text-white" />
             </div>
-            <h3 className="text-2xl font-semibold">Total Vehicles</h3>
-            <p className="text-5xl font-bold">{stats.totalVehicles}</p>
-            <p className="text-sm mt-2 text-gray-600">
-              The total number of cars available for rent.
-            </p>
+            <h3 className="text-lg font-semibold">Total Vehicles</h3>
+            <p className="text-2xl font-bold">{stats.totalVehicles}</p>
+            <p className="text-xs mt-1 text-gray-600">Cars available for rent</p>
           </div>
         </div>
 
-        {/* Growth Rate with White background */}
-        <div className="bg-white p-6 rounded-lg shadow-xl text-blue-900 text-center transform hover:scale-105 transition-transform duration-300 mb-8">
-          <div className="bg-blue-900 p-4 rounded-full mb-4 inline-block">
-            <FaChartLine className="text-4xl text-white" />
+        {/* Growth Rate */}
+        <div className="bg-white p-3 rounded-lg shadow-md text-blue-900 text-center mb-4">
+          <div className="bg-blue-900 p-2 rounded-full mb-2 inline-block">
+            <FaChartLine className="text-2xl text-white" />
           </div>
-          <h3 className="text-2xl font-semibold">Growth Rate</h3>
-          <p className="text-4xl font-bold text-yellow-300">{stats.growthRate}%</p>
-          <p className="text-sm mt-2 text-gray-600">
-            This indicates the percentage growth in user engagement over time.
+          <h3 className="text-lg font-semibold">Growth Rate</h3>
+          <p className="text-2xl font-bold text-yellow-300">{stats.growthRate}%</p>
+          <p className="text-xs mt-1 text-gray-600">
+            Growth in user engagement over time
           </p>
         </div>
 
-        {/* Graphs - Cards with shadow and white background */}
-        <div className=" gap-8 mb-8">
-          <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-xl font-semibold mb-4 text-blue-900">Customer Growth</h3>
+        {/* Graphs - Cards with shadow and smaller padding */}
+        <div className="gap-4 mb-4">
+          <div className="bg-white p-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
+            <h3 className="text-lg font-semibold mb-2 text-blue-900">Customer Growth</h3>
             <Line data={customerGrowthData} />
           </div>
-          <div className="bg-white p-8 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-xl font-semibold mb-4 text-blue-900">Vehicle Growth</h3>
+          <div className="bg-white p-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
+            <h3 className="text-lg font-semibold mb-2 text-blue-900">Vehicle Growth</h3>
             <Line data={customerGrowthData} />
           </div>
         </div>
@@ -168,16 +162,16 @@ export default function DashboardPage() {
       {/* Right Side: Top 3 Cars, Customers, and Renters */}
       <div className="flex flex-col w-full md:w-1/3">
         {/* Top 3 Customers */}
-        <div className="bg-white p-6 rounded-lg shadow-2xl text-blue-900 mb-8">
-          <h3 className="text-2xl font-semibold mb-4 text-blue-900">Top 3 Customers</h3>
-          <div className="space-y-4">
+        <div className="bg-white p-4 rounded-lg shadow-md text-blue-900 mb-4">
+          <h3 className="text-lg font-semibold mb-2 text-blue-900">Top 3 Customers</h3>
+          <div className="space-y-2">
             {customers.map((customer, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <img className="w-16 h-16 rounded-full" src={customer.img} alt={customer.name} />
+              <div key={index} className="flex items-center space-x-3">
+                <img className="w-12 h-12 rounded-full" src={customer.img} alt={customer.name} />
                 <div className="flex-1">
                   <p className="font-semibold text-blue-900">{customer.name}</p>
-                  <p className="text-sm text-blue-900">{customer.email}</p>
-                  <div className="flex items-center mt-2">
+                  <p className="text-xs text-gray-600">{customer.email}</p>
+                  <div className="flex items-center mt-1">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
@@ -185,9 +179,7 @@ export default function DashboardPage() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">Rating: {customer.rating} / 5</p>
-                  <p className="text-xs text-gray-500 mt-1">Rank: {index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}</p>
-                  <p className="text-xs text-gray-500 mt-1">Transactions: {customer.transactions}</p>
+                  <p className="text-xs text-gray-600 mt-1">Transactions: {customer.transactions}</p>
                 </div>
               </div>
             ))}
@@ -195,16 +187,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Top 3 Renters */}
-        <div className="bg-white p-6 rounded-lg shadow-2xl text-blue-900 mb-8">
-          <h3 className="text-2xl font-semibold mb-4 text-blue-900">Top 3 Renters</h3>
-          <div className="space-y-4">
+        <div className="bg-white p-4 rounded-lg shadow-md text-blue-900 mb-4">
+          <h3 className="text-lg font-semibold mb-2 text-blue-900">Top 3 Renters</h3>
+          <div className="space-y-2">
             {renters.map((renter, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <img className="w-16 h-16 rounded-full" src={renter.img} alt={renter.name} />
+              <div key={index} className="flex items-center space-x-3">
+                <img className="w-12 h-12 rounded-full" src={renter.img} alt={renter.name} />
                 <div className="flex-1">
                   <p className="font-semibold text-blue-900">{renter.name}</p>
-                  <p className="text-sm text-blue-900">{renter.email}</p>
-                  <div className="flex items-center mt-2">
+                  <p className="text-xs text-gray-600">{renter.email}</p>
+                  <div className="flex items-center mt-1">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
@@ -212,9 +204,7 @@ export default function DashboardPage() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">Rating: {renter.rating} / 5</p>
-                  <p className="text-xs text-gray-500 mt-1">Rank: {index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}</p>
-                  <p className="text-xs text-gray-500 mt-1">Rentals: {renter.rentals}</p>
+                  <p className="text-xs text-gray-600 mt-1">Rentals: {renter.rentals}</p>
                 </div>
               </div>
             ))}
@@ -222,19 +212,18 @@ export default function DashboardPage() {
         </div>
 
         {/* Top 3 Cars */}
-        <div className="bg-white p-6 rounded-lg shadow-2xl text-blue-900">
-          <h3 className="text-2xl font-semibold mb-4 text-blue-900">Top 3 Cars</h3>
-          <div className="space-y-4">
+        <div className="bg-white p-4 rounded-lg shadow-md text-blue-900">
+          <h3 className="text-lg font-semibold mb-2 text-blue-900">Top 3 Cars</h3>
+          <div className="space-y-2">
             {cars.map((car, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <div className="w-16 h-16 rounded-md">
+              <div key={index} className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-md">
                   <img src={car.img} alt={car.name} className="w-full h-full object-cover rounded-md" />
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-blue-900">{car.name}</p>
-                  <p className="text-sm text-blue-900">{car.model}</p>
                   <p className="text-xs text-gray-600">{car.features}</p>
-                  <div className="flex items-center">
+                  <div className="flex items-center mt-1">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
@@ -242,8 +231,7 @@ export default function DashboardPage() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">Rating: {car.rating} / 5</p>
-                  <p className="text-xs text-gray-500 mt-1">Rank: {index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}</p>
+                  <p className="text-xs text-gray-600 mt-1">Rating: {car.rating} / 5</p>
                 </div>
               </div>
             ))}

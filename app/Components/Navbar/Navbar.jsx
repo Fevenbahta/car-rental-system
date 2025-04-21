@@ -1,5 +1,5 @@
 'use client';
-
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -7,8 +7,11 @@ import { FaUser, FaGlobe, FaWrench, FaCommentDots, FaCogs, FaSignOutAlt } from "
 import LoginModal from "../login/page.jsx";
 import RegisterModal from "../register/page.jsx";
 import profileAvatar from './profile-avator.jpg';
+import { usePathname } from 'next/navigation';
 
 const MobileNavbar = dynamic(() => import('./MobileNavbar/MobileNavbar'));
+
+
 
 function Navbar() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -96,6 +99,9 @@ function Navbar() {
 
     setIsLoading(true);
     setLoginError('');
+    const router = useRouter();
+
+
 
     try {
       const response = await fetch('https://www.carrental.emareicthub.com/api/login', {
@@ -133,13 +139,31 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
     }
   };
 
+  const [hash, setHash] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHash(window.location.hash);
+    }
+  }, []);
+  
+  const pathname = usePathname();
+  
+  const isVehicleGroupPage = pathname == '/vehicle-group';
+  console.log(isVehicleGroupPage,"isVehicleGroupPage",pathname)
+  const isActive = (targetPath) => {
+    const fullPath = pathname + hash;
+    return fullPath === targetPath;
+  };
   if (loading) return null;
 
   return (
     <>
       {/* TOP BAR */}
-      <div className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center ${scrollPosition > 50 ? 'bg-black bg-opacity-60' : 'bg-transparent'}`}>
-        <div className="flex items-center gap-6">
+      <div
+      className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center
+        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-black bg-opacity-60' : 'bg-transparent'}`}
+    >   <div className="flex items-center gap-6">
           <span><i className="fas fa-phone-alt mr-2"></i>+1 222-555-33-99</span>
           <span><i className="fas fa-envelope mr-2"></i>sale@carrent.com</span>
         </div>
@@ -178,18 +202,32 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
       </div>
 
       {/* MAIN NAVBAR */}
-      <div 
-        className={`fixed top-11 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-7xl px-6 py-4 ${scrollPosition > 50 ? 'bg-black bg-opacity-60' : 'bg-transparent'} flex justify-center transition-all duration-300`}
-      >
-        <ul className="flex gap-6 md:gap-10 text-white text-base font-medium">
-          <li><a className="hover:text-blue-500" href="/">Home</a></li>
-          <li><a className="hover:text-blue-500" href="#about">About</a></li>
-          <li><a className="hover:text-blue-500" href="#pick__section">How It Works</a></li>
-          <li><a className="hover:text-blue-500" href="#testimonials">Vehicles</a></li>
-          <li><a className="hover:text-blue-500" href="#download">Contact</a></li>
-          <li><a className="hover:text-blue-500" href="#faq">Need Help?</a></li>
-        </ul>
-      </div>
+      <div
+      className={`fixed top-11 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-7xl px-6 py-4 
+        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-black bg-opacity-60' : 'bg-transparent'} 
+        flex justify-center transition-all duration-300`}
+    >
+      <ul className="flex gap-6 md:gap-10 text-white text-base font-medium">
+        <li>
+          <a className={isActive('/') ? 'text-blue-500' : 'hover:text-blue-500'} href="/">Home</a>
+        </li>
+        <li>
+          <a className={isActive('/#about') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#about">About</a>
+        </li>
+        <li>
+          <a className={isActive('/#pick__section') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#pick__section">How It Works</a>
+        </li>
+        <li>
+          <a className={isActive('/vehicle-group') ? 'text-blue-500' : 'hover:text-blue-500'} href="/vehicle-group">Vehicles</a>
+        </li>
+        <li>
+          <a className={isActive('/#download') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#download">Contact</a>
+        </li>
+        <li>
+          <a className={isActive('/#faq') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#faq">Need Help?</a>
+        </li>
+      </ul>
+    </div>
       {isSidebarOpen && (
   <div
     ref={sidebarRef}

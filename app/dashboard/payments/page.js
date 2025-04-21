@@ -65,13 +65,13 @@ export default function PaymentsPage() {
         <div>
           <button
             onClick={handlePrint}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 mr-2"
+            className="bg-blue-900 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition-all duration-300 mr-2"
           >
             Print Statement
           </button>
           <button
             onClick={handleExport}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-all duration-300"
+            className="bg-green-900 text-white px-2 py-1 rounded-lg hover:bg-green-700 transition-all duration-300"
           >
             Export to CSV
           </button>

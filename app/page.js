@@ -20,7 +20,7 @@ const Testimonials = dynamic(()=>import('./Components/Testimonials/Testimonials'
 const Faq = dynamic(()=>import('./Components/faq/Faq'))
 const Download = dynamic(()=>import('./Components/Download/Download'))
 // const About =  dynamic(() => import("./Components/about/AboutUs"))
-// const VehicleGroup = dynamic(() => import("./Components/VehicleGroup/VehicleGroup"))
+const VehicleGroup = dynamic(() => import("./Components/VehicleGroup/VehicleGroup"))
 // const Brand = dynamic(() =>import("./Components/Brand/Brand"))
 // const Footer = dynamic(()=>import('./Components/Footer/Footer'))
 
@@ -36,10 +36,11 @@ export default function Home() {
 
       <PlanTrip />  {/* <HowItWorks /> */}
       <MostSearched />
-      {/* <Brand />
-      <VehicleGroup />
-        */}
-      {/* <PickCar /> */}
+     {/* <Brand /> */}
+    
+       
+        {/* <VehicleGroup /> */}
+     {/* <PickCar />  */}
       <ChooseUs />
       <Testimonials />
       <Faq />

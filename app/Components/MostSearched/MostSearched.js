@@ -1,64 +1,92 @@
+'use client';
 import React from "react";
-// Importing the vehicle data
-import { vehicles } from './data'; 
-import "./MostSearched.css";
+import Link from "next/link";
+import { vehicles } from "./data";
 
 const MostSearched = () => {
   if (!vehicles || vehicles.length === 0) {
-    return <p>No vehicles found.</p>;
+    return <p className="text-center text-gray-600 text-lg mt-8">No vehicles found.</p>;
   }
 
   return (
-    <div className="most-searched-container">
-       <p
-        
-      >
-        Popular Rental Deals
-      </p>
-  <h2>Most Popular Cars</h2>
-   
-      <div className="vehicles-container">
+    <div className="text-center px-6 py-10">
+      <p className="text-lg text-gray-700 mb-2">Popular Rental Deals</p>
+      <h2 className="text-3xl font-bold mb-8">Most Popular Cars</h2>
+
+      <div className="flex flex-wrap justify-center gap-10">
         {vehicles.map((vehicle, index) => (
-  <div key={index} className="vehicle-card">
-  <div className="image-container">
-    <img src={vehicle.image.src} alt={vehicle.model} className="vehicle-image" />
-  </div>
-  <div className="description-container">
-    <h3>{vehicle.brand}</h3>
-    <p className="vehicle-location">
-      <i className="fas fa-map-marker-alt icon" /> {vehicle.location}
-    </p>
-    <p className="vehicle-rating">
-      <i className="fas fa-star icon star" /> {vehicle.rating} ({vehicle.reviews})
-    </p>
-    <hr className="price-separator" />
-    <h4>{vehicle.model}</h4>
+          <div
+            key={index}
+            className="flex flex-col w-full max-w-xl border border-gray-300 rounded-lg shadow-md overflow-hidden"
+          >
+            <div className="w-full h-56">
+              <img
+                src={vehicle.image.src}
+                alt={vehicle.model}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-    <div className="description-row">
-      <div className="left-column">
-        <p><i className="fas fa-car icon" /> {vehicle.mileage}</p>
-        <p><i className="fas fa-cogs icon" /> {vehicle.transmission}</p>
-      </div>
-      <div className="right-column">
-        <p><i className="fas fa-gas-pump icon" /> {vehicle.fuel}</p>
-        <p><i className="fas fa-chair icon" /> {vehicle.seats}</p>
-      </div>
-    </div>
+            <div className="px-4 py-3">
+              <h3 className="text-xl font-semibold mb-1">{vehicle.brand}</h3>
 
+              <p className="text-sm text-gray-600 flex justify-center items-center mb-1">
+                <i className="fas fa-map-marker-alt mr-2 text-gray-700" />
+                {vehicle.location}
+              </p>
 
-    <p className="price-info">
-    
-      <strong>Price</strong>&nbsp;{vehicle.price} ETB/Day
-    </p>
+              <p className="text-sm text-yellow-500 flex justify-center items-center mb-3">
+                <i className="fas fa-star mr-1" />
+                {vehicle.rating} ({vehicle.reviews})
+              </p>
 
-    <button className="rent-now-btn">
-      Rent Now <i className="fas fa-arrow-right"></i>
-    </button>
-  </div>
-</div>
+              <hr className="border-t border-gray-300 mb-3" />
 
-    
+              <h4 className="text-lg font-medium mb-4">{vehicle.model}</h4>
+
+              <div className="flex justify-between text-sm text-gray-700 mb-4">
+                <div>
+                  <p className="flex items-center mb-1">
+                    <i className="fas fa-car mr-2" />
+                    {vehicle.mileage}
+                  </p>
+                  <p className="flex items-center">
+                    <i className="fas fa-cogs mr-2" />
+                    {vehicle.transmission}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="flex items-center mb-1">
+                    <i className="fas fa-gas-pump mr-2" />
+                    {vehicle.fuel}
+                  </p>
+                  <p className="flex items-center">
+                    <i className="fas fa-chair mr-2" />
+                    {vehicle.seats}
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-center text-lg font-semibold text-gray-800 mb-3">
+                <strong>Price</strong>&nbsp;{vehicle.price} ETB/Day
+              </p>
+
+              <button className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition">
+                Rent Now <i className="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
         ))}
+      </div>
+
+      {/* 👇 Show More Button */}
+      <div className="mt-10">
+        <Link href="/vehicle-group">
+          <button className="px-6 py-3 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700 transition">
+            Show More <i className="fas fa-angle-double-right ml-2"></i>
+          </button>
+        </Link>
       </div>
     </div>
   );

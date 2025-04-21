@@ -12,7 +12,7 @@ import { IconMapPinFilled } from "@tabler/icons-react";
 import { IconCalendarEvent } from "@tabler/icons-react";
 import "./BookCar.css";
 import Image from "next/image";
-
+import Link from "next/link";
 function BookCar() {
   const [modal, setModal] = useState(false); //  class - active-modal
 
@@ -39,7 +39,6 @@ function BookCar() {
     const newAge = e.target.value;
     setAge(newAge);
 
- 
     if (newAge && newAge < 18) {
       setAgeError("The age is too low");
     } else {
@@ -59,7 +58,6 @@ function BookCar() {
     doneMsg.style.display = "flex";
   };
 
-
   // taking value of modal inputs
   const handleName = (e) => {
     setName(e.target.value);
@@ -72,11 +70,6 @@ function BookCar() {
   const handlePhone = (e) => {
     setPhone(e.target.value);
   };
-/*
-  const handleAge = (e) => {
-    setAge(e.target.value);
-  };
-  */
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -96,7 +89,7 @@ function BookCar() {
 
   // open modal when all inputs are fulfilled
   const openModal = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent form submission from reloading the page
     const errorMsg = document.querySelector(".error-message");
     if (
       pickUp === "" ||
@@ -107,12 +100,18 @@ function BookCar() {
     ) {
       errorMsg.style.display = "flex";
     } else {
-      setModal(!modal);
+      setModal(!modal); // This toggles the modal state
       const modalDiv = document.querySelector(".booking-modal");
-      modalDiv.scroll(0, 0);
+  
+      // Only scroll if modalDiv exists
+      if (modalDiv) {
+        modalDiv.scroll(0, 0);
+      }
+  
       errorMsg.style.display = "none";
     }
   };
+  
 
   // disable page scroll when modal is displayed
   useEffect(() => {
@@ -122,15 +121,6 @@ function BookCar() {
       document.body.style.overflow = "auto";
     }
   }, [modal]);
-
-  /*
-  const confirmBooking = (e) => {
-    e.preventDefault();
-    setModal(!modal);
-    const doneMsg = document.querySelector(".booking-done");
-    doneMsg.style.display = "flex";
-  };
-  */
 
   // taking value of booking inputs
   const handleCar = (e) => {
@@ -187,112 +177,128 @@ function BookCar() {
 
   return (
     <>
-      <section id="booking-section" className="book-section">
+      <section id="booking-section" className="flex justify-center items-center bg-gradient-to-b from-gray-100 to-white font-poppins relative">
         {/* overlay */}
         <div
           onClick={openModal}
-          className={`modal-overlay ${modal ? "active-modal" : ""}`}
+          className={`fixed inset-0 bg-black bg-opacity-30 z-[999999999] ${modal ? "flex" : "hidden"}`}
         ></div>
 
-        <div className="container">
-          <div className="book-content">
-            <div className="book-content__box">
-              <h2>Book a car</h2>
+        <div className="container mx-auto mb-40 px-6">
+          <div className="bg-white w-full max-w-6xl p-16 shadow-lg rounded-md text-[#010103] z-10 relative flex flex-col">
+            <h2 className="text-4xl font-bold mb-12">Book a car</h2>
 
-              <p className="error-message">
-                All fields required! <IconX width={20} height={20} />
-              </p>
+            <p className="error-message hidden text-red-800 bg-red-200 border border-red-300 p-6 rounded-md mb-8 text-xl font-medium flex justify-between items-center">
+              All fields required! <IconX width={24} height={24} />
+            </p>
 
-              <p className="booking-done">
-                Check your email to confirm an order.{" "}
-                <IconX width={20} height={20} onClick={hideMessage} />
-              </p>
+            <p className="booking-done hidden text-green-900 bg-green-100 border border-green-300 p-6 rounded-md mb-8 text-xl font-medium flex justify-between items-center">
+              Check your email to confirm an order.{" "}
+              <IconX width={24} height={24} onClick={hideMessage} />
+            </p>
 
-              <form className="box-form">
-                <div className="box-form__car-type">
-                  <label>
-                    <IconCar className="input-icon" /> &nbsp; Select Your Car
-                    Type <b>*</b>
-                  </label>
-                  <select value={carType} onChange={handleCar}>
-                    <option>Select your car type</option>
-                    <option value="Audi A1 S-Line">Audi A1 S-Line</option>
-                    <option value="VW Golf 6">VW Golf 6</option>
-                    <option value="Toyota Camry">Toyota Camry</option>
-                    <option value="BMW 320 ModernLine">
-                      BMW 320 ModernLine
-                    </option>
-                    <option value="Mercedes-Benz GLK">Mercedes-Benz GLK</option>
-                    <option value="VW Passat CC">VW Passat CC</option>
-                  </select>
-                </div>
+            <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Car Type */}
+              <div className="flex flex-col">
+                <label className="text-2xl font-semibold mb-4 flex items-center">
+                  <IconCar className="text-blue-600 mr-3" /> Select Your Car Type <b className="text-blue-600 ml-2">*</b>
+                </label>
+                <select value={carType} onChange={handleCar} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
+                  <option>Select your car type</option>
+                  <option value="Audi A1 S-Line">Audi A1 S-Line</option>
+                  <option value="VW Golf 6">VW Golf 6</option>
+                  <option value="Toyota Camry">Toyota Camry</option>
+                  <option value="BMW 320 ModernLine">BMW 320 ModernLine</option>
+                  <option value="Mercedes-Benz GLK">Mercedes-Benz GLK</option>
+                  <option value="VW Passat CC">VW Passat CC</option>
+                </select>
+              </div>
 
-                {/* <div className="box-form__car-type">
-                  <label>
-                    <IconMapPinFilled className="input-icon" /> &nbsp; Pick-up{" "}
-                    <b>*</b>
-                  </label>
-                  <select value={pickUp} onChange={handlePick}>
-                    <option>Select pick up location</option>
-                    <option>Addis Ababa</option>
-                    <option>Rome</option>
-                    <option>Los Angeles</option>
-                    <option>Las Vegas</option>
-                    <option>Barcellona</option>
-                  </select>
-                </div>
+              {/* Pickup Location */}
+              <div className="flex flex-col">
+                <label className="text-2xl font-semibold mb-4 flex items-center">
+                  <IconMapPinFilled className="text-blue-600 mr-3" /> Pick-up <b className="text-blue-600 ml-2">*</b>
+                </label>
+                <select value={pickUp} onChange={handlePick} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
+                  <option>Select pick up location</option>
+                  <option>Addis Ababa</option>
+                  <option>Rome</option>
+                  <option>Los Angeles</option>
+                  <option>Las Vegas</option>
+                  <option>Barcellona</option>
+                </select>
+              </div>
 
-                <div className="box-form__car-type">
-                  <label>
-                    <IconMapPinFilled className="input-icon" /> &nbsp; Drop-of{" "}
-                    <b>*</b>
-                  </label>
-                  <select value={dropOff} onChange={handleDrop}>
-                    <option>Select drop off location</option>
-                    <option>New York</option>
-                    <option>Rome</option>
-                    <option>Los Angeles</option>
-                    <option>Las Vegas</option>
-                    <option>Barcellona</option>
-                  </select>
-                </div> */}
-                <div className="box-form__car-time">
-                  <label htmlFor="picktime">
-                    <IconCalendarEvent className="input-icon" /> &nbsp; Pick-up{" "}
-                    <b>*</b>
-                  </label>
-                  <input
-                    id="picktime"
-                    value={pickTime}
-                    onChange={handlePickTime}
-                    type="date"
-                  ></input>
-                </div>
+              {/* Drop-off Location */}
+              <div className="flex flex-col">
+                <label className="text-2xl font-semibold mb-4 flex items-center">
+                  <IconMapPinFilled className="text-blue-600 mr-3" /> Drop-off <b className="text-blue-600 ml-2">*</b>
+                </label>
+                <select value={dropOff} onChange={handleDrop} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
+                  <option>Select drop off location</option>
+                  <option>New York</option>
+                  <option>Rome</option>
+                  <option>Los Angeles</option>
+                  <option>Las Vegas</option>
+                  <option>Barcellona</option>
+                </select>
+              </div>
 
-                <div className="box-form__car-time">
-                  <label htmlFor="droptime">
-                    <IconCalendarEvent className="input-icon" /> &nbsp; Drop-of{" "}
-                    <b>*</b>
-                  </label>
-                  <input
-                    id="droptime"
-                    value={dropTime}
-                    onChange={handleDropTime}
-                    type="date"
-                  ></input>
-                </div>
-<div>     <button onClick={openModal} type="submit">
-                  Search
-                </button>  </div>
+              {/* Pickup Date */}
+              <div className="flex flex-col">
+                <label htmlFor="picktime" className="text-2xl font-semibold mb-4 flex items-center">
+                  <IconCalendarEvent className="text-blue-600 mr-3" /> Pick-up <b className="text-blue-600 ml-2">*</b>
+                </label>
+                <input
+                  id="picktime"
+                  value={pickTime}
+                  onChange={handlePickTime}
+                  type="date"
+                  className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl"
+                />
+              </div>
 
-         
-              </form>
-            </div>
+              {/* Drop-off Date */}
+              <div className="flex flex-col">
+                <label htmlFor="droptime" className="text-2xl font-semibold mb-4 flex items-center">
+                  <IconCalendarEvent className="text-blue-600 mr-3" /> Drop-off <b className="text-blue-600 ml-2">*</b>
+                </label>
+                <input
+                  id="droptime"
+                  value={dropTime}
+                  onChange={handleDropTime}
+                  type="date"
+                  className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl"
+                />
+              </div>
+
+              <div className="self-end">
+                
+              <Link
+  href={{
+    pathname: '/vehicle-group',
+    query: {
+      carType,
+      pickUp,
+      dropOff,
+      pickTime,
+      dropTime,
+    }
+  }}
+>
+  <button
+    type="submit"
+    className="bg-blue-600 text-white px-8 py-5 rounded shadow-lg text-2xl font-medium hover:shadow-xl transition-all"
+  >
+    Search
+  </button>
+</Link>
+
+              </div>
+            </form>
           </div>
         </div>
       </section>
-
-      {/* modal ------------------------------------ */}
 
       <div className={`booking-modal ${modal ? "active-modal" : ""}`}>
         {/* title */}

@@ -111,10 +111,10 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
                 >
-                  <option value="+251">🇪🇹 +251</option>
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+251">+251</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+91">+91</option>
                 </select>
                 <input
                   className="flex-1 border border-gray-300 rounded px-3 py-2"
