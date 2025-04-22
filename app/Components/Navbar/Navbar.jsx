@@ -114,19 +114,6 @@ function Navbar() {
 
       const data = await response.json();
       const user = data.user;
-<<<<<<< HEAD:app/Components/Navbar/Navbar.jsx
-
-      localStorage.setItem('userPhone', user.phone);
-      localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
-      localStorage.setItem('userStatus', user.status);
-      localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src);
-      localStorage.setItem('userEmail', user.email);
-      localStorage.setItem('token', data.token);
-       // Log the token after storing it
-console.log("Stored token:", data.token);  // Debugging log to confirm it's stored
-
-      setEmail(user.email);
-=======
   console.log("this is login data",data)
       // Save values to localStorage
       localStorage.setItem('userPhone', user.phone);
@@ -137,7 +124,6 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
       localStorage.setItem('token',data.token)
       setEmail(user.email); 
       // Set states
->>>>>>> 845526f7456e11e5434e62f1ce08fc4c691fea5b:app/Components/Navbar/Navbar.js
       setIsLoggedIn(true);
       setUserName(`${user.first_name} ${user.last_name}`);
       setPhone(user.phone);
@@ -162,7 +148,7 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
   
   const pathname = usePathname();
   
-  const isVehicleGroupPage = pathname == '/vehicle-group';
+  const isVehicleGroupPage = pathname === '/vehicle-group' || pathname.startsWith('/vehicle-detail/');
   console.log(isVehicleGroupPage,"isVehicleGroupPage",pathname)
   const isActive = (targetPath) => {
     const fullPath = pathname + hash;
@@ -175,7 +161,7 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
       {/* TOP BAR */}
       <div
       className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center
-        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-black bg-opacity-60' : 'bg-transparent'}`}
+        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-white text-black' : 'bg-transparent'}`}
     >   <div className="flex items-center gap-6">
           <span><i className="fas fa-phone-alt mr-2"></i>+1 222-555-33-99</span>
           <span><i className="fas fa-envelope mr-2"></i>sale@carrent.com</span>
@@ -217,10 +203,10 @@ console.log("Stored token:", data.token);  // Debugging log to confirm it's stor
       {/* MAIN NAVBAR */}
       <div
       className={`fixed top-11 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-7xl px-6 py-4 
-        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-black bg-opacity-60' : 'bg-transparent'} 
+        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-white text-black' : 'bg-transparent text-white'} 
         flex justify-center transition-all duration-300`}
     >
-      <ul className="flex gap-6 md:gap-10 text-white text-base font-medium">
+      <ul className="flex gap-6 md:gap-10  text-base font-medium">
         <li>
           <a className={isActive('/') ? 'text-blue-500' : 'hover:text-blue-500'} href="/">Home</a>
         </li>

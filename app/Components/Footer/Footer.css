@@ -1,6 +1,6 @@
 footer {
     background-color: #ffffff;
-    padding: 10rem 0;
+    padding: 5rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,7 +10,7 @@ footer {
     display: grid;
     color: #010103;
     grid-template-columns: 27fr 21fr 21fr 21fr;
-    gap: 8rem;
+    gap: 2rem;
     justify-content: center;
     text-align: left;
     color: #010103;
@@ -49,8 +49,8 @@ footer {
   }
   
   .footer-content__1 li:nth-child(1) {
-    font-size: 2.4rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
   
   .footer-content__1 li:nth-child(1) span {
@@ -58,7 +58,7 @@ footer {
   }
   
   .footer-content__1 li:nth-child(2) {
-    font-size: 1.6rem;
+    font-size: 1rem;
     color: #706f7b;
     line-height: 1.7;
     margin-bottom: 3rem;
@@ -66,7 +66,7 @@ footer {
   
   .footer-content__1 li:nth-child(3),
   .footer-content__1 li:nth-child(4) {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     margin-bottom: 1rem;
@@ -93,12 +93,12 @@ footer {
   }
   
   .footer-content__2 li {
-    font-size: 1.6rem;
+    font-size: 1rem;
     margin-bottom: 1rem;
   }
   
   .footer-content__2 li:nth-child(1) {
-    font-size: 2.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-transform: uppercase;
     font-family: "Poppins", sans-serif;
@@ -107,7 +107,7 @@ footer {
   
   .footer-content__2 input {
     font-family: "Poppins", sans-serif;
-    font-size: 14px;
+    font-size: 1px;
     font-weight: 400;
     line-height: 26px;
     background-color: #ececec;
@@ -129,12 +129,12 @@ footer {
     color: white;
     font-weight: 700;
     background-color: #1572D3;
-    padding: 1.5rem 2.5rem;
+    padding: 0.5rem 0.5rem;
     border-radius: 0.3rem;
-    box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.25);
+    box-shadow: 0 10px 15px 0 rgba(48, 162, 255, 0.25);
     transition: all 0.3s;
     border: 2px solid #1572D3;
-    font-size: 1.6rem;
+    font-size: 1rem;
     width: -moz-fit-content;
     width: fit-content;
     cursor: pointer;
@@ -142,6 +142,6 @@ footer {
   }
   
   .submit-email:hover {
-    box-shadow: 0 10px 15px 0 rgba(255, 83, 48, 0.4);
-    background-color: #fa4226;
+    box-shadow: 0 10px 15px 0 rgba(48, 172, 255, 0.4);
+    background-color: #26b7fa;
   }

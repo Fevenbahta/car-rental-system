@@ -10,7 +10,7 @@ import CarPassat from "../images/passatcc.jpg";
 import { IconCar, IconInfoCircleFilled, IconX } from "@tabler/icons-react";
 import { IconMapPinFilled } from "@tabler/icons-react";
 import { IconCalendarEvent } from "@tabler/icons-react";
-import "./BookCar.css";
+
 import Image from "next/image";
 import Link from "next/link";
 function BookCar() {
@@ -200,7 +200,7 @@ function BookCar() {
             <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Car Type */}
               <div className="flex flex-col">
-                <label className="text-2xl font-semibold mb-4 flex items-center">
+                <label className="text-xl font-semibold mb-4 flex items-center">
                   <IconCar className="text-blue-600 mr-3" /> Select Your Car Type <b className="text-blue-600 ml-2">*</b>
                 </label>
                 <select value={carType} onChange={handleCar} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
@@ -216,7 +216,7 @@ function BookCar() {
 
               {/* Pickup Location */}
               <div className="flex flex-col">
-                <label className="text-2xl font-semibold mb-4 flex items-center">
+                <label className="text-xl font-semibold mb-4 flex items-center">
                   <IconMapPinFilled className="text-blue-600 mr-3" /> Pick-up <b className="text-blue-600 ml-2">*</b>
                 </label>
                 <select value={pickUp} onChange={handlePick} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
@@ -231,7 +231,7 @@ function BookCar() {
 
               {/* Drop-off Location */}
               <div className="flex flex-col">
-                <label className="text-2xl font-semibold mb-4 flex items-center">
+                <label className="text-xl font-semibold mb-4 flex items-center">
                   <IconMapPinFilled className="text-blue-600 mr-3" /> Drop-off <b className="text-blue-600 ml-2">*</b>
                 </label>
                 <select value={dropOff} onChange={handleDrop} className="text-gray-500 border border-gray-300 rounded px-6 py-4 text-xl">
@@ -246,7 +246,7 @@ function BookCar() {
 
               {/* Pickup Date */}
               <div className="flex flex-col">
-                <label htmlFor="picktime" className="text-2xl font-semibold mb-4 flex items-center">
+                <label htmlFor="picktime" className="text-xl font-semibold mb-4 flex items-center">
                   <IconCalendarEvent className="text-blue-600 mr-3" /> Pick-up <b className="text-blue-600 ml-2">*</b>
                 </label>
                 <input
@@ -260,7 +260,7 @@ function BookCar() {
 
               {/* Drop-off Date */}
               <div className="flex flex-col">
-                <label htmlFor="droptime" className="text-2xl font-semibold mb-4 flex items-center">
+                <label htmlFor="droptime" className="text-xl font-semibold mb-4 flex items-center">
                   <IconCalendarEvent className="text-blue-600 mr-3" /> Drop-off <b className="text-blue-600 ml-2">*</b>
                 </label>
                 <input
@@ -288,7 +288,7 @@ function BookCar() {
 >
   <button
     type="submit"
-    className="bg-blue-600 text-white px-8 py-5 rounded shadow-lg text-2xl font-medium hover:shadow-xl transition-all"
+    className="bg-blue-600 text-white px-6 py-4 rounded shadow-lg text-xl font-medium hover:shadow-xl transition-all"
   >
     Search
   </button>

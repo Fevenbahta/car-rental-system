@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 
 const Navbar = dynamic(() => import("../Components/Navbar/Navbar.jsx"));
 const VehicleGroup = dynamic(() => import("../Components/VehicleGroup/VehicleGroup"));
+const Footer = dynamic(()=>import('../Components/Footer/Footer'))
+const Download = dynamic(()=>import('../Components/Download/Download'))
 
 export default function VehicleGroupPage() {
   return (
@@ -11,6 +13,7 @@ export default function VehicleGroupPage() {
       {/* Add transparent black background using Tailwind classes */}
       <Navbar className="bg-black bg-opacity-80" /> 
       <VehicleGroup />
+      <div className="max-w-screen-4xs"><Download/><Footer/> </div>
     </div>
   );
 }
