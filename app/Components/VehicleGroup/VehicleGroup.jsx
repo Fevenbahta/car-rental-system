@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from "next/link";
-import fetchVehicles from "../services/vehicleService"; // Import the service
+import fetchVehicles from "../../Services/vehicleService"; // Import the service
 
 const vehicles = [
   {

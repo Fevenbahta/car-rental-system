@@ -3,7 +3,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 const Navbar = dynamic(() => import("../../Components/Navbar/Navbar.jsx"));
-const VehicleGroup = dynamic(() => import("../../Components/VehicleGroup/VehicleGroup.js"));
+const VehicleGroup = dynamic(() => import("../../Components/VehicleGroup/VehicleGroup.jsx"));
 const Footer = dynamic(()=>import('../../Components/Footer/Footer.jsx'))
 const Download = dynamic(()=>import('../../Components/Download/Download.jsx'))
 

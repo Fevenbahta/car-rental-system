@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import Link from "next/link";
-import { vehicles } from "./data.jsx";
+import { vehicles } from "../../Data/data.jsx";
 
 const MostSearched = () => {
   if (!vehicles || vehicles.length === 0) {
