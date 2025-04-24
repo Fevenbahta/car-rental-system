@@ -23,7 +23,7 @@
     "**/*.ts",
     "**/*.tsx",
     "app/pages/login/login.jsx",
-    "app/forgotpassword/forgotpassword.jsx",
+    "app/Auth/forgotpassword/forgotpassword.jsx",
     "app/Componeapp/otpverification/otpverification.jsx",
     "app/Componeapp/register/register.jsx"
   ],

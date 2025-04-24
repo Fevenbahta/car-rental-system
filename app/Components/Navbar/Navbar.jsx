@@ -4,12 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { FaUser, FaGlobe, FaWrench, FaCommentDots, FaCogs, FaSignOutAlt } from "react-icons/fa";
-import LoginModal from "../login/page.jsx";
-import RegisterModal from "../register/page.jsx";
-import profileAvatar from './profile-avator.jpg';
+import LoginModal from "../../Modal/login.jsx";
+import RegisterModal from "../../Modal/register.jsx";
 import { usePathname } from 'next/navigation';
 
-const MobileNavbar = dynamic(() => import('./MobileNavbar/MobileNavbar'));
 
 
 
@@ -21,7 +19,7 @@ function Navbar() {
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userStatus, setUserStatus] = useState('verified');
-  const [profilePic, setProfilePic] = useState(profileAvatar);
+  const [profilePic, setProfilePic] = useState('/profileAvatar');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -99,12 +97,13 @@ function Navbar() {
 
     setIsLoading(true);
     setLoginError('');
-    const router = useRouter();
+
 
 
 
     try {
-      const response = await fetch('https://www.carrental.emareicthub.com/api/login', {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -148,7 +147,7 @@ function Navbar() {
   
   const pathname = usePathname();
   
-  const isVehicleGroupPage = pathname === '/vehicle-group' || pathname.startsWith('/vehicle-detail/');
+  const isVehicleGroupPage = pathname === '/Pages/vehicle-group' || pathname.startsWith('/vehicle-detail/');
   console.log(isVehicleGroupPage,"isVehicleGroupPage",pathname)
   const isActive = (targetPath) => {
     const fullPath = pathname + hash;
@@ -160,8 +159,8 @@ function Navbar() {
     <>
       {/* TOP BAR */}
       <div
-      className={`fixed top-0 left-0 right-0 z-50 text-white text-sm py-2 px-6 flex justify-between items-center
-        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-white text-black' : 'bg-transparent'}`}
+      className={`fixed top-0 left-0 right-0 z-50  text-sm py-2 px-6 flex justify-between items-center
+        ${scrollPosition > 50 || isVehicleGroupPage ? 'bg-white text-black' : 'bg-transparent text-white'}`}
     >   <div className="flex items-center gap-6">
           <span><i className="fas fa-phone-alt mr-2"></i>+1 222-555-33-99</span>
           <span><i className="fas fa-envelope mr-2"></i>sale@carrent.com</span>
@@ -217,7 +216,7 @@ function Navbar() {
           <a className={isActive('/#pick__section') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#pick__section">How It Works</a>
         </li>
         <li>
-          <a className={isActive('/vehicle-group') ? 'text-blue-500' : 'hover:text-blue-500'} href="/vehicle-group">Vehicles</a>
+          <a className={isActive('/Pages/vehicle-group') ? 'text-blue-500' : 'hover:text-blue-500'} href="/Pages/vehicle-group">Vehicles</a>
         </li>
         <li>
           <a className={isActive('/#download') ? 'text-blue-500' : 'hover:text-blue-500'} href="/#download">Contact</a>
