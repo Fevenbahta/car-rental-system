@@ -34,7 +34,7 @@ export default function Listings() {
       }
 
       const response = await axios.get(
-        "https://www.carrentalbackend.emareicthub.com/api/cars/my-listings",
+        "https://subbirr.com/api/cars/my-listings",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ export default function Listings() {
       }
 
       await axios.delete(
-        `https://www.carrentalbackend.emareicthub.com/api/cars/${id}`,
+        `https://subbirr.com/api/cars/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

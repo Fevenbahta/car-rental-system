@@ -60,7 +60,7 @@ export default function CustomerVerificationPage() {
 
     try {
       const res = await fetch(
-        `https://www.carrentalbackend.emareicthub.com/api/admin/users/${selectedCustomer.id}/verify`,
+        `https://subbirr.com/api/admin/users/${selectedCustomer.id}/verify`,
         {
           method: "PATCH",
           headers: {

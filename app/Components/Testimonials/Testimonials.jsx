@@ -32,7 +32,7 @@ function Testimonials() {
               </p>
               <div className="flex flex-col mt-[3rem]">
                 <div className="flex gap-[2rem] items-center">
-                  <Image src="/images/pfp1.jpg" alt="user_img" width={70} height={70} className="rounded-full" />
+                  <Image src="/pfp1.jpg" alt="user_img" width={70} height={70} className="rounded-full" />
                   <span>
                     <h4 className="text-[1.8rem]">Parry Hotter</h4>
                     <p className="text-[1.6rem] font-poppins text-[#706f7b]">New York</p>
@@ -51,7 +51,7 @@ function Testimonials() {
               </p>
               <div className="flex flex-col mt-[3rem]">
                 <div className="flex gap-[2rem] items-center">
-                  <Image src="/images/pfp2.jpg" alt="user_img" width={70} height={70} className="rounded-full" />
+                  <Image src="/pfp2.jpg" alt="user_img" width={70} height={70} className="rounded-full" />
                   <span>
                     <h4 className="text-[1.8rem]">Ron Rizzly</h4>
                     <p className="text-[1.6rem] font-poppins text-[#706f7b]">Los Angeles</p>

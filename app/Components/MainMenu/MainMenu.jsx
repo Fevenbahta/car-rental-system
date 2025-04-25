@@ -20,17 +20,17 @@ const MainMenu = ({ currentPath }) => {
   const router = useRouter();
 
   const mainMenuItems = [
-    { text: 'Dashboard', path: '/Dashboard', icon: <FaTachometerAlt /> },
-    { text: 'Bookings', path: '/Dashboard/bookings', icon: <FaClipboardList /> },
-    { text: 'Payments', path: '/Dashboard/payments', icon: <FaMoneyBillWave /> },
-    { text: 'Vehicles', path: '/Dashboard/vehicles', icon: <FaCar /> },
-    { text: 'Customers', path: '/Dashboard/customers', icon: <FaUsers /> },
-    { text: 'Verification', path: '/Dashboard/verification', icon: <FaClipboardCheck /> },
-    { text: 'Approval', path: '/Dashboard/approval', icon: <FaCheckCircle /> },
-    { text: 'Maintenance', path: '/Dashboard/maintenance', icon: <FaTools /> },
-    { text: 'Support Tickets', path: '/Dashboard/support', icon: <FaHeadset /> },
-    { text: 'Account Settings', path: '/Dashboard/settings/account', icon: <FaUserCog /> },
-    { text: 'System Config', path: '/Dashboard/settings/system', icon: <FaCogs /> },
+    { text: 'Dashboard', path: '/Components/Dashboard', icon: <FaTachometerAlt /> },
+    { text: 'Bookings', path: '/Components/Dashboard/bookings', icon: <FaClipboardList /> },
+    { text: 'Payments', path: '/Components/Dashboard/payments', icon: <FaMoneyBillWave /> },
+    { text: 'Vehicles', path: '/Components/Dashboard/vehicles', icon: <FaCar /> },
+    { text: 'Customers', path: '/Components/Dashboard/customers', icon: <FaUsers /> },
+    { text: 'Verification', path: '/Components/Dashboard/verification', icon: <FaClipboardCheck /> },
+    { text: 'Approval', path: '/Components/Dashboard/approval', icon: <FaCheckCircle /> },
+    { text: 'Maintenance', path: '/Components/Dashboard/maintenance', icon: <FaTools /> },
+    { text: 'Support Tickets', path: '/Components/Dashboard/support', icon: <FaHeadset /> },
+    { text: 'Account Settings', path: '/Components/Dashboard/settings/account', icon: <FaUserCog /> },
+    { text: 'System Config', path: '/Components/Dashboard/settings/system', icon: <FaCogs /> },
   ];
   
 
@@ -102,7 +102,7 @@ const Header = ({ onDropdownClick }) => {
 
 // Main Layout Component
 const DashboardLayout = ({ children }) => {
-  const [selectedPage, setSelectedPage] = useState("/Dashboard");
+  const [selectedPage, setSelectedPage] = useState("/Components/Dashboard");
   const handleDropdownClick = (action) => {
     if (action === "logout") {
       // Implement your logout logic here

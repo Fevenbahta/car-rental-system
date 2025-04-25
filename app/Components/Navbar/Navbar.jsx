@@ -118,7 +118,7 @@ function Navbar() {
       localStorage.setItem('userPhone', user.phone);
       localStorage.setItem('userName', `${user.first_name} ${user.last_name}`);
       localStorage.setItem('userStatus', user.status);
-      localStorage.setItem('userProfilePic', user.profile_picture || profileAvatar.src); // fallback if null
+      localStorage.setItem('userProfilePic', user.profile_picture || profilePic.src); // fallback if null
       localStorage.setItem('userEmail', user.email); // 👈 Save email if available
       localStorage.setItem('token',data.token)
       setEmail(user.email); 
@@ -127,7 +127,7 @@ function Navbar() {
       setUserName(`${user.first_name} ${user.last_name}`);
       setPhone(user.phone);
       setUserStatus(user.status);
-      setProfilePic(user.profile_picture || profileAvatar.src);
+      setProfilePic(user.profile_picture || profilePic.src);
       setIsLoginOpen(false);
       router.push('/');
     } catch (error) {
@@ -233,7 +233,7 @@ function Navbar() {
   >
     <div className="flex flex-col items-center mb-4 mt-10">
       <img
-        src={profileAvatar?.src || "//profile-avator.jpg"}
+        src={"/profile-avator.jpg"}
         alt="Profile Picture"
         className="w-16 h-16 rounded-full mb-2"
       />
@@ -254,7 +254,7 @@ function Navbar() {
     <ul className="w-full mt-6">
       <li className="mb-4 text-white cursor-pointer flex items-center">
         <FaUser className="mr-3 text-grey-400 text-sm" />
-        <a href="/profile">Manage Account</a>
+        <a href="/Components/Profile">Manage Account</a>
       </li>
       <li className="mb-4 text-white cursor-pointer flex items-center">
         <FaGlobe className="mr-3 text-grey-400 text-sm" />

@@ -24,7 +24,7 @@ export default function RentalActivity() {
       }
 
       const response = await axios.get(
-        "https://www.carrentalbackend.emareicthub.com/api/rentals/history",
+        "https://subbirr.com/api/rentals/history",
         {
           headers: {
             Authorization: `Bearer ${token}`,

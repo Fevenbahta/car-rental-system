@@ -79,7 +79,7 @@ export default function AccountSecurity() {
       }
 
       await axios.post(
-        "https://www.carrentalbackend.emareicthub.com/api/send-verification-codes",
+        "https://subbirr.com/api/send-verification-codes",
         {
           phone: userData.phone,
           email: userData.email,
@@ -122,7 +122,7 @@ export default function AccountSecurity() {
       }
 
       const response = await axios.patch(
-        "https://www.carrentalbackend.emareicthub.com/api/user/toggle-2fa",
+        "https://subbirr.com/api/user/toggle-2fa",
         {
           phone: userData.phone,
           email: userData.email,
@@ -187,7 +187,7 @@ export default function AccountSecurity() {
       }
 
       await axios.post(
-        "https://www.carrentalbackend.emareicthub.com/api/update-password",
+        "https://subbirr.com/api/update-password",
         {
           current_password: formData.currentPassword,
           new_password: formData.newPassword,
@@ -232,7 +232,7 @@ export default function AccountSecurity() {
       }
 
       const response = await axios.delete(
-        "https://www.carrentalbackend.emareicthub.com/api/account",
+        "https://subbirr.com/api/account",
         {
           headers: {
             Authorization: `Bearer ${token}`,

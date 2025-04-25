@@ -72,7 +72,7 @@ export default function PaymentInfo() {
       }
 
       const response = await axios.get(
-        "https://www.carrentalbackend.emareicthub.com/api/payment-methods",
+        "https://subbirr.com/api/payment-methods",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ export default function PaymentInfo() {
       }
 
       await axios.delete(
-        `https://www.carrentalbackend.emareicthub.com/api/payment-methods/${id}`,
+        `https://subbirr.com/api/payment-methods/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

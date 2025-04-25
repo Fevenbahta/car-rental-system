@@ -1,6 +1,6 @@
 "use client";
-import MainMenu from '../Components/MainMenu/MainMenu';  // Main menu includes the Sidebar and navigation
-import Header from '../Components/Header/Header';      // Optional: Header for top bar (logout, profile)
+import MainMenu from '../MainMenu/MainMenu';  // Main menu includes the Sidebar and navigation
+import Header from '../Header/Header';      // Optional: Header for top bar (logout, profile)
 import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({ children }) {

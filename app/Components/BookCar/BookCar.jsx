@@ -7,13 +7,6 @@ import { IconCalendarEvent } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Import car images
-import CarAudi from "../images/audia1.jpg";
-import CarGolf from "../images/golf6.jpg";
-import CarToyota from "../images/toyotacamry.jpg";
-import CarBmw from "../images/bmw320.jpg";
-import CarMercedes from "../images/benz.jpg";
-import CarPassat from "../images/passatcc.jpg";
 
 // Define car data as JSON
 const carData = [

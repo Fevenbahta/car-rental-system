@@ -4,7 +4,15 @@ import { useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Image from 'next/image';
 import Flag from 'react-world-flags';
+import React, { useState } from "react";
+ 
 
+const countryCodes = [
+  { code: "+251", flag: "/ethiopia.png", label: "+251" },
+  { code: "+1", flag: "/united-states.png", label: "+1" },
+  { code: "+44", flag: "/united-kingdom.png", label: "+44" },
+  { code: "+91", flag: "/flag.png", label: "+91" }
+];
 const LoginModal = ({
   isOpen,
   onClose,
@@ -29,6 +37,8 @@ const LoginModal = ({
   }, [isOpen]);
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const googleAuthUrl = `${baseUrl}/api/auth/google`;
+  const toggleDropdown = () => setIsSelectOpen(!isSelectOpen); // Toggle the dropdown visibility
+  const [isSelectOpen, setIsSelectOpen] = useState(false); // Track whether the dropdown is open or closed
 
   if (!isOpen) return null;
 
@@ -54,28 +64,39 @@ const LoginModal = ({
           <div>
             <label className="block mb-1 text-sm font-medium">Phone Number</label>
             <div className="flex gap-2 items-center">
-  <select
-                value={countryCode}
-                onChange={(e) => setCountryCode(e.target.value)}
-                className="border rounded-md px-2 py-1 text-sm"
-              >
-                <option value="+251">
-                  <Flag code="ET" className="inline-block w-6 h-6 mr-2" />
-                  +251
-                </option>
-                <option value="+1">
-                  <Flag code="US" className="inline-block w-6 h-6 mr-2" />
-                  +1
-                </option>
-                <option value="+44">
-                  <Flag code="GB" className="inline-block w-6 h-6 mr-2" />
-                  +44
-                </option>
-                <option value="+91">
-                  <Flag code="IN" className="inline-block w-6 h-6 mr-2" />
-                  +91
-                </option>
-              </select>
+            <div className="relative">
+      <button className=" border px-1 py-1 rounded w-24 bg-white" onClick={toggleDropdown}>
+      <img
+            src={countryCodes.find(country => country.code === countryCode)?.flag}
+            alt="Country Flag"
+            className="inline-block w-6 h-4 mr-2"
+          />
+          {countryCode}
+      </button>
+      
+      {/* Show the dropdown only if isOpen is true */}
+      {isSelectOpen && (
+        <ul className="absolute z-50 top-full left-0 border bg-white w-full mt-1 rounded shadow-lg">
+          {countryCodes.map((country) => (
+            <li
+              key={country.code}
+              className="flex items-center px-1 py-1 cursor-pointer hover:bg-gray-100"
+              onClick={() => {
+                setCountryCode(country.code);
+                setIsSelectOpen(false); // Close the dropdown after selecting a country
+              }}
+            >
+              <img
+                src={country.flag}
+                alt={`${country.label} Flag`}
+                className="inline-block w-6 h-4 mr-2"
+              />
+              {country.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
 
               <input
                 type="tel"

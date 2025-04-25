@@ -45,7 +45,7 @@ export default function Reviews() {
       }
 
       const response = await axios.get(
-        "https://www.carrentalbackend.emareicthub.com/api/reviews",
+        "https://subbirr.com/api/reviews",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export default function Reviews() {
       }
 
       await axios.post(
-        "https://www.carrentalbackend.emareicthub.com/api/reviews",
+        "https://subbirr.com/api/reviews",
         {
           car_id: parseInt(createForm.car_id),
           rating: createForm.rating,
@@ -132,7 +132,7 @@ export default function Reviews() {
       }
 
       await axios.delete(
-        `https://www.carrentalbackend.emareicthub.com/api/reviews/${reviewId}`,
+        `https://subbirr.com/api/reviews/${reviewId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -171,7 +171,7 @@ export default function Reviews() {
       }
 
       await axios.put(
-        `https://www.carrentalbackend.emareicthub.com/api/reviews/${reviewId}`,
+        `https://subbirr.com/api/reviews/${reviewId}`,
         {
           rating: editForm.rating,
           review_text: editForm.review_text,
