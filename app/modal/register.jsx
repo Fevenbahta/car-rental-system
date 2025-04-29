@@ -7,6 +7,8 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,6 +30,7 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
   const [generalError, setGeneralError] = useState("");
 
   const [isSelectOpen, setIsSelectOpen] = useState(false); // Track whether the dropdown is open or closed
+  const [nationality, setNationality] = useState("ethiopian");
 
 
   const generateRandomPassword = () => {
@@ -58,9 +61,11 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
     if (password.length <= 6) return setPasswordError("Password too short.");
     if (password !== confirmPassword) return setConfirmPasswordError("Passwords do not match.");
 
-    let formattedPhone = phone.length === 9 ? "0" + phone : phone;
+    let formattedPhone = phone.length === 9 ? "251" + phone : phone;
     const formData = new FormData();
     formData.append("first_name", firstName);
+    formData.append("middle_name", middleName);
+
     formData.append("last_name", lastName);
     formData.append("email", email);
     formData.append("password", password);
@@ -113,10 +118,12 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
           <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">{generalError}</div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input label="First Name" value={firstName} onChange={setFirstName} />
-            <Input label="Last Name" value={lastName} onChange={setLastName} />
+          <Input label="First Name" value={firstName} onChange={setFirstName} />
+<Input label="Middle Name" value={middleName} onChange={setMiddleName} />
+<Input label="Last Name" value={lastName} onChange={setLastName} />
+
             <Input label="Email" value={email} onChange={setEmail} error={emailError} type="email" />
             <div>
               <label className="block text-sm mb-1">Phone</label>
@@ -187,11 +194,44 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
             <Input label="Address" value={address} onChange={setAddress} />
             <Input label="City" value={city} onChange={setCity} />
             <Input label="Birth Date" type="date" value={birthDate} onChange={setBirthDate} />
-            <FileInput label="Driver's Licence" onChange={setDriverLicence} />
-            <FileInput label="Digital ID" onChange={setDigitalId} />
+            <div>
+  <label className="block text-sm mb-1">Nationality</label>
+  <select
+  className="w-full border border-gray-300 rounded px-3 py-2"
+  value={nationality}
+  onChange={(e) => {
+    setNationality(e.target.value);
+    setDigitalId(null);   // Clear digital ID
+    setPassport(null);    // Clear passport
+  }}
+>
+    <option value="ethiopian">Ethiopian</option>
+    <option value="foreigner">Foreigner</option>
+  </select>
+</div>
 
-            {/* Passport input field */}
-            <FileInput label="Passport" onChange={setPassport} />
+            <FileInput label="Driver's Licence" onChange={setDriverLicence} />
+            {nationality === "ethiopian" ? (
+  <FileInput
+    key="ethiopian"
+    label="National ID (Digital ID)"
+    onChange={(file) => {
+      setDigitalId(file);     // Set the selected digital ID
+      setPassport(null);      // Clear the passport file
+    }}
+  />
+) : (
+  <FileInput
+    key="foreign"
+    label="Passport"
+    onChange={(file) => {
+      setPassport(file);      // Set the selected passport
+      setDigitalId(null);     // Clear the digital ID file
+    }}
+  />
+)}
+
+
           </div>
 
           <div className="flex justify-center">
@@ -216,7 +256,7 @@ const RegisterModal = ({ isOpen, onClose, onShowLogin }) => {
           </p>
           <p className="text-gray-900 text-sm">or</p>
           <a href="https://subbirr.com/api/auth/google">
-            <button className="flex items-center gap-2 border mx-auto px-10 py-2 rounded bg-gray-100">
+            <button className="flex items-center gap-2 border mx-auto px-10 py-2 mb-5 rounded bg-gray-100">
               <img src="/google-logo.png" alt="Google" className="w-7 h-7" />
               <span className="text-sm">Continue with Google</span>
             </button>
